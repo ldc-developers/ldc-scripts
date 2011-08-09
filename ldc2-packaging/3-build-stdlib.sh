@@ -9,12 +9,12 @@ removeDir $LDC_BUILD/import $LDC_BUILD/lib $LDC_BUILD/runtime
 
 if [ ! -e $DRUNTIME_SOURCE ]
 then
-    git clone git://github.com/AlexeyProkhin/druntime.git $DRUNTIME_SOURCE
+    git clone git://github.com/ldc-developers/druntime.git $DRUNTIME_SOURCE
 fi
 
 if [ ! -e $PHOBOS_SOURCE ]
 then
-    git clone git://github.com/AlexeyProkhin/phobos.git $PHOBOS_SOURCE
+    git clone git://github.com/ldc-developers/phobos.git $PHOBOS_SOURCE
 fi
 
 cd $LDC_BUILD

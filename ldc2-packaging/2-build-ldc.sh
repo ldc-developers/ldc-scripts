@@ -8,7 +8,7 @@ recreateDir $LDC_BUILD
 
 if [ ! -e $LDC_SOURCE ]
 then
-    hg clone https://bitbucket.org/lindquist/ldc $LDC_SOURCE
+    git clone git://github.com/ldc-developers/ldc.git $LDC_SOURCE
 fi
 
 cd $LDC_BUILD
