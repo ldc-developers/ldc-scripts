@@ -17,7 +17,7 @@ fi
 cp ldc2.conf $PACKAGEDIR/bin/
 
 mkdir -p $PACKAGEDIR/lib
-cp $LDC_BUILD/lib/liblphobos2.a $PACKAGEDIR/lib
+cp $LDC_BUILD/lib/libphobos-ldc.a $PACKAGEDIR/lib
 
 mkdir -p $PACKAGEDIR/import
 cp -r $DRUNTIME_SOURCE/import/* $PACKAGEDIR/import/

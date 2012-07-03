@@ -6,8 +6,8 @@
 removeDir $LLVM_SOURCE
 recreateDir $LLVM_BUILD $LLVM_PREFIX
 
-LLVM_VERSION=2.9
-LLVM_SOURCE_PACKAGE=http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.tgz
+LLVM_VERSION=3.0
+LLVM_SOURCE_PACKAGE=http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.tar.gz
 if [ ! -e $WORKDIR/llvm-source.tgz ]
 then
     wget $LLVM_SOURCE_PACKAGE -O $WORKDIR/llvm-source.tgz
@@ -19,7 +19,7 @@ fi
 if [ ! -e $LLVM_SOURCE ]
 then
     tar -xzf $WORKDIR/llvm-source.tgz
-    mv llvm-$LLVM_VERSION $LLVM_SOURCE
+    mv llvm-$LLVM_VERSION.src $LLVM_SOURCE
 fi
 
 cd $LLVM_BUILD
