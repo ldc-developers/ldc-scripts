@@ -47,7 +47,7 @@ echo "done."
 
 # Delete tags which were not touched because they never contained a test/
 # directory.
-echo "$REWRITE_LOG" | grep "WARNING: Ref 'refs/tags/.*'is unchanged" |\
+echo "$REWRITE_LOG" | grep "WARNING: Ref 'refs/tags/.*' is unchanged" |\
     sed -e "s,WARNING: Ref 'refs/tags/,,g" -e "s,' is unchanged,,g" |\
     xargs git tag -d
 
