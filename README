@@ -1,5 +1,8 @@
 Maintenance and other helper scripts for LDC.
 
-ldc2-packaging/ :
-Building LDC2 from scratch and preparing a DMD-style package
+dmd-testsuite/
+   Helpers for keeping the dmd-testsuite repository up to date.
+
+ldc2-packaging/
+   Building LDC2 from scratch and preparing a DMD-style package
 
