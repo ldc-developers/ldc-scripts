@@ -1,37 +1,21 @@
 #!/bin/bash
 
-. functions.sh
-. dirs.sh
+. env.sh
 
-removeDir $LLVM_SOURCE
-recreateDir $LLVM_BUILD $LLVM_PREFIX
+mkdir -p $SRC_DIR
+cd $SRC_DIR
 
-LLVM_VERSION=3.0
-LLVM_SOURCE_PACKAGE=http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.tar.gz
-if [ ! -e $WORKDIR/llvm-source.tgz ]
-then
-    wget $LLVM_SOURCE_PACKAGE -O $WORKDIR/llvm-source.tgz
-fi
-if [ ! -e $WORKDIR/llvm-source.tgz ]
-then
-    error Failed to fetch LLVM sources from $LLVM_SOURCE_PACKAGE
-fi
-if [ ! -e $LLVM_SOURCE ]
-then
-    tar -xzf $WORKDIR/llvm-source.tgz
-    mv llvm-$LLVM_VERSION.src $LLVM_SOURCE
-fi
+rm -f llvm-$LLVM_VERSION.src.tar.gz
+wget http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.gz
+tar llvm-$LLVM_VERSION.src.tar.gz
 
-cd $LLVM_BUILD
-if ! $LLVM_SOURCE/configure --prefix=$LLVM_PREFIX --enable-optimized --enable-targets=x86
-then
-    error Failed to configure LLVM
-fi
-if ! make
-then
-    error Failed to build LLVM
-fi
-if ! make install
-then
-    error Failed to install LLVM
-fi
+rm -rf llvm
+mv llvm-$LLVM_VERSION.src llvm
+
+rm -rf $WORK_DIR/llvm
+mkdir -p $WORK_DIR/llvm
+cd $WORK_DIR/llvm
+
+$SRC_DIR/llvm/configure --enable-optimized --disable-assertions \
+    --enable-targets=x86 --prefix=$INTERMEDIATE_DIR
+make install
