@@ -27,7 +27,7 @@ esac
 
 case "$ARCH" in
     x86) ;;
-    x86_64) ;;
+    x86_64) export MULTILIB=true ;;
     *)  echo "Set ARCH to the target architecture (x86/x86_64)."
         exit 1
         ;;
