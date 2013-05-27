@@ -7,7 +7,7 @@ cd $SRC_DIR
 
 rm -f llvm-$LLVM_VERSION.src.tar.gz
 wget http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.gz
-tar llvm-$LLVM_VERSION.src.tar.gz
+tar xzf llvm-$LLVM_VERSION.src.tar.gz
 
 rm -rf llvm
 mv llvm-$LLVM_VERSION.src llvm
