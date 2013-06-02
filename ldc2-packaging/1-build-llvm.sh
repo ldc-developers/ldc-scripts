@@ -6,7 +6,7 @@ mkdir -p $SRC_DIR
 cd $SRC_DIR
 
 rm -f llvm-$LLVM_VERSION.src.tar.gz
-wget http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.gz
+curl -O http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.gz
 tar xzf llvm-$LLVM_VERSION.src.tar.gz
 
 rm -rf llvm
