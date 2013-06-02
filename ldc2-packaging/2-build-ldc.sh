@@ -21,9 +21,11 @@ if [ -n "$MULTILIB" ]; then
     extra_flags="$extra_flags -DMULTILIB=ON"
 fi
 
-cmake $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR -DCMAKE_BUILD_TYPE=Release -DLLVM_CONFIG=$INTERMEDIATE_DIR/bin/llvm-config -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import $extra_flags
+cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
+	-DCMAKE_BUILD_TYPE=Release -DLLVM_CONFIG=$INTERMEDIATE_DIR/bin/llvm-config \
+	-DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import $extra_flags
 rm -rf $PKG_DIR
-make install
+$MAKE install
 
 rm $PKG_DIR/etc/ldc2.rebuild.conf
 perl -pi -e s,$PKG_DIR/,%%ldcbinarypath%%/../,g $BUILD_ROOT/pkg/etc/ldc2.conf

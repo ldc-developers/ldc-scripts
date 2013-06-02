@@ -18,9 +18,19 @@ export WORK_DIR=$BUILD_ROOT/work
 export PKG_DIR=$BUILD_ROOT/pkg
 
 case "$OS" in
-    linux) ;;
-    osx) ;;
-    *)  echo "Set OS to the target operating system (linux/osx)."
+    linux)
+        export CMAKE_GENERATOR=
+        export MAKE=make
+        ;;
+    osx)
+        export CMAKE_GENERATOR=
+        export MAKE=make
+        ;;
+    mingw)
+        export CMAKE_GENERATOR='-G Ninja'
+        export MAKE=ninja
+        ;;
+    *)  echo "Set OS to the target operating system (linux/osx/mingw)."
         exit 1
         ;;
 esac

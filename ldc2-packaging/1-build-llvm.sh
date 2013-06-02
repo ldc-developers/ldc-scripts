@@ -21,6 +21,12 @@ rm -rf $WORK_DIR/llvm
 mkdir -p $WORK_DIR/llvm
 cd $WORK_DIR/llvm
 
-$SRC_DIR/llvm/configure --enable-optimized --disable-assertions \
-    --enable-targets=x86 --prefix=$INTERMEDIATE_DIR
-make install
+if [ "$OS" == "mingw" ]; then
+    cmake $CMAKE_GENERATOR $SRC_DIR/llvm/ -DLLVM_TARGETS_TO_BUILD=X86 \
+        -DCMAKE_INSTALL_PREFIX=$INTERMEDIATE_DIR -DCMAKE_BUILD_TYPE=Release
+else
+    $SRC_DIR/llvm/configure --enable-optimized --disable-assertions \
+        --enable-targets=x86 --prefix=$INTERMEDIATE_DIR
+fi
+
+$MAKE install
