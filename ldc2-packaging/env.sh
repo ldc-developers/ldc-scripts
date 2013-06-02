@@ -50,4 +50,6 @@ EOM
     exit 1
 fi
 
+export PKG_BASE=ldc2-$LDC_VERSION$LDC_VERSION_SUFFIX-$OS-$ARCH
+
 set -ex

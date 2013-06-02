@@ -6,7 +6,7 @@ export BUILD_ROOT=/build
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install subversion git-core g++-multilib make cmake libconfig++8-dev xz-utils
+sudo apt-get -y install subversion git-core g++-multilib make cmake libconfig++8-dev xz-utils s3cmd
 
 sudo mkdir $BUILD_ROOT
 sudo chown ubuntu:ubuntu $BUILD_ROOT
