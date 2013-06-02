@@ -34,7 +34,7 @@ case "$ARCH" in
 esac
 
 if [ -z "$LLVM_VERSION" ]; then
-    echo "Set LLVM_VERSION to the LLVM version to use (e.g. '3.2')."
+    echo "Set LLVM_VERSION to the LLVM version to use (e.g. '3.2', or 'release_33' to fetch from SVN)."
     exit 1
 fi
 
