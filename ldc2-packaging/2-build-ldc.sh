@@ -17,6 +17,13 @@ extra_flags=
 if [ "$OS" == "linux" ]; then
     extra_flags="$extra_flags -DCMAKE_EXE_LINKER_FLAGS='-Wl,-rpath,\$ORIGIN'"
 fi
+if [ "$OS" == "mingw" ]; then
+    # Tailored to the setup described in
+    # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
+    # We should add support for starting from a clean MinGW/MSYS installation.
+    extra_flags="$extra_flags -DLIBCONFIG++_INCLUDE_DIR=/local/include"
+    extra_flags="$extra_flags -DLIBCONFIG++_LIBRARY=/local/lib/libconfig++.dll.a"
+fi
 if [ -n "$MULTILIB" ]; then
     extra_flags="$extra_flags -DMULTILIB=ON"
 fi
