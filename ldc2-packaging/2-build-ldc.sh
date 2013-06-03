@@ -22,8 +22,8 @@ if [ -n "$MULTILIB" ]; then
 fi
 
 cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
-	-DCMAKE_BUILD_TYPE=Release -DLLVM_CONFIG=$INTERMEDIATE_DIR/bin/llvm-config \
-	-DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import $extra_flags
+    -DCMAKE_BUILD_TYPE=Release -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR \
+    -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import $extra_flags
 rm -rf $PKG_DIR
 $MAKE install
 
