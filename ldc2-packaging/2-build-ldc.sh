@@ -35,7 +35,18 @@ rm -rf $PKG_DIR
 $MAKE install
 
 rm $PKG_DIR/etc/ldc2.rebuild.conf
-perl -pi -e s,$PKG_DIR/,%%ldcbinarypath%%/../,g $BUILD_ROOT/pkg/etc/ldc2.conf
+
+if [ "$OS" == "mingw" ]; then
+    # Need to expand this to the full Windows path, CMake does as well.
+    pkg_replace_dir=$(exec 2>/dev/null; cd "$PKG_DIR" && pwd -W)
+else
+    pkg_replace_dir=$PKG_DIR
+fi
+perl -pi -e s?$pkg_replace_dir/?%%ldcbinarypath%%/../?g $PKG_DIR/etc/ldc2.conf
+
+# Perl on MinGW/MSYS creates a backup file despite -i being specified without
+# an argument.
+rm -f $PKG_DIR/etc/ldc2.conf.bak
 
 if [ "$OS" == "osx" ]; then
     libfile=$(otool -L $PKG_DIR/bin/ldc2 | grep libconfig | cut -f1 -d ' ' | xargs)
