@@ -17,6 +17,26 @@ export INTERMEDIATE_DIR=$BUILD_ROOT/intermediate
 export WORK_DIR=$BUILD_ROOT/work
 export PKG_DIR=$BUILD_ROOT/pkg
 
+if [ -z "$OS" ]; then
+    case "$(uname -s 2>&1)" in
+        Linux) export OS=linux ;;
+        Darwin) export OS=osx ;;
+        *) echo 'Could not auto-detect operating system, set the OS environment variable.' ;;
+    esac
+    echo "Auto-detected OS, building for '${OS}'."
+    echo
+fi
+
+if [ -z "$ARCH" ]; then
+    case "$(uname -m 2>&1)" in
+        i686) export ARCH=x86 ;;
+        x86_64) export ARCH=x86_64 ;;
+        *) echo 'Could not auto-detect architecture, set the ARCH environment variable.' ;;
+    esac
+    echo "Auto-detected ARCH, building for '${ARCH}'."
+    echo
+fi
+
 case "$OS" in
     linux)
         export CMAKE_GENERATOR=
@@ -30,7 +50,8 @@ case "$OS" in
         export CMAKE_GENERATOR='-G Ninja'
         export MAKE=ninja
         ;;
-    *)  echo "Set OS to the target operating system (linux/osx/mingw)."
+    *)
+        echo "Invalid target operating system (must be one of linux/osx/mingw)."
         exit 1
         ;;
 esac
@@ -38,7 +59,8 @@ esac
 case "$ARCH" in
     x86) ;;
     x86_64) export MULTILIB=true ;;
-    *)  echo "Set ARCH to the target architecture (x86/x86_64)."
+    *)
+        echo "Invalid target architecture (must be one of x86/x86_64)."
         exit 1
         ;;
 esac
