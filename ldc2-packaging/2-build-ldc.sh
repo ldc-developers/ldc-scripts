@@ -6,7 +6,7 @@ mkdir -p $SRC_DIR
 cd $SRC_DIR
 
 rm -rf ldc
-git clone --recursive http://github.com/ldc-developers/ldc.git
+git clone --recursive https://github.com/ldc-developers/ldc.git
 cd ldc && git checkout release-$LDC_VERSION && git submodule update
 
 rm -rf $WORK_DIR/ldc
