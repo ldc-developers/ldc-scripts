@@ -18,6 +18,7 @@ cd $BUILD_ROOT
 mv $PKG_DIR $PKG_BASE
 
 if [ "$OS" == "mingw" ]; then
+    zip -9 -r $PKG_BASE.zip $PKG_BASE
     7z a -t7z $PKG_BASE.7z $PKG_BASE -mx9
 else
     tar czvf $PKG_BASE.tar.gz $PKG_BASE
