@@ -58,7 +58,7 @@ case "$OS" in
         export MAKE=ninja
         ;;
     *)
-        echo "Invalid target operating system (must be one of linux/osx/mingw)."
+        echo "Invalid target operating system (\$OS must be one of linux/osx/mingw)."
         exit 1
         ;;
 esac
@@ -67,7 +67,7 @@ case "$ARCH" in
     x86) ;;
     x86_64) export MULTILIB=true ;;
     *)
-        echo "Invalid target architecture (must be one of x86/x86_64)."
+        echo "Invalid target architecture (\$ARCH must be one of x86/x86_64)."
         exit 1
         ;;
 esac
