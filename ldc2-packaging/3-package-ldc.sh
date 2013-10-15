@@ -2,6 +2,7 @@
 
 . env.sh
 
+cp pkgfiles/README $PKG_DIR
 cp $SRC_DIR/ldc/LICENSE $PKG_DIR
 
 if [ "$OS" == "mingw" ]; then
