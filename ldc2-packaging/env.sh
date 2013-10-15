@@ -17,6 +17,13 @@ export INTERMEDIATE_DIR=$BUILD_ROOT/intermediate
 export WORK_DIR=$BUILD_ROOT/work
 export PKG_DIR=$BUILD_ROOT/pkg
 
+# OS is set in the MSYS shell by default.
+if [ "$OS" == "Windows_NT" ]; then
+    export OS=mingw
+    echo "Auto-detected OS, building for '${OS}'."
+    echo
+fi
+
 if [ -z "$OS" ]; then
     case "$(uname -s 2>&1)" in
         Linux) export OS=linux ;;
