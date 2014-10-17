@@ -34,8 +34,6 @@ cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
 rm -rf $PKG_DIR
 $MAKE install
 
-rm -f $PKG_DIR/etc/ldc2.rebuild.conf
-
 if [ "$OS" == "mingw" ]; then
     # Need to expand this to the full Windows path, CMake does as well.
     pkg_replace_dir=$(exec 2>/dev/null; cd "$PKG_DIR" && pwd -W)
