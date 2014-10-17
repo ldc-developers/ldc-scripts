@@ -21,8 +21,8 @@ if [ "$OS" == "mingw" ]; then
     # Tailored to the setup described in
     # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
     # We should add support for starting from a clean MinGW/MSYS installation.
-    extra_flags="$extra_flags -DLIBCONFIG++_INCLUDE_DIR=/local/include"
-    extra_flags="$extra_flags -DLIBCONFIG++_LIBRARY=/local/lib/libconfig++.dll.a"
+    extra_flags="$extra_flags -DLIBCONFIG_INCLUDE_DIR=/local/include"
+    extra_flags="$extra_flags -DLIBCONFIG_LIBRARY=/local/lib/libconfig++.dll.a"
 fi
 if [ -n "$MULTILIB" ]; then
     extra_flags="$extra_flags -DMULTILIB=ON"
@@ -34,7 +34,7 @@ cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
 rm -rf $PKG_DIR
 $MAKE install
 
-rm $PKG_DIR/etc/ldc2.rebuild.conf
+rm -f $PKG_DIR/etc/ldc2.rebuild.conf
 
 if [ "$OS" == "mingw" ]; then
     # Need to expand this to the full Windows path, CMake does as well.
