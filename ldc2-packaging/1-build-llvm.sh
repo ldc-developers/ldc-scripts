@@ -5,7 +5,17 @@
 mkdir -p $SRC_DIR
 cd $SRC_DIR
 
-if [[ $LLVM_VERSION == release_* ]]; then
+if [[ $LLVM_VERSION == /* ]]; then
+    if [ "${LLVM_VERSION##*.}" == "gz" ]; then
+        tar xzf $LLVM_VERSION
+    else
+        tar xJf $LLVM_VERSION
+    fi
+    base=$(basename $LLVM_VERSION)
+
+    rm -rf llvm
+    mv "${base%.*.*}" llvm
+elif [[ $LLVM_VERSION == release_* ]]; then
     rm -rf llvm
     svn checkout http://llvm.org/svn/llvm-project/llvm/branches/$LLVM_VERSION llvm
 else
