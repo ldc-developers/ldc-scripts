@@ -10,8 +10,12 @@ if [[ $LLVM_VERSION == release_* ]]; then
     svn checkout http://llvm.org/svn/llvm-project/llvm/branches/$LLVM_VERSION llvm
 else
     rm -f llvm-$LLVM_VERSION.src.tar.gz
-    curl -O http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.gz
-    tar xzf llvm-$LLVM_VERSION.src.tar.gz
+    curl -O "http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.{gz,xz}"
+    if [ -e llvm-$LLVM_VERSION.src.tar.gz]; then
+        tar xzf llvm-$LLVM_VERSION.src.tar.gz
+    else
+        tar xJf llvm-$LLVM_VERSION.src.tar.xz
+    fi
 
     rm -rf llvm
     mv llvm-$LLVM_VERSION.src llvm
