@@ -22,7 +22,7 @@ if [ "$OS" == "mingw" ]; then
     # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
     # We should add support for starting from a clean MinGW/MSYS installation.
     extra_flags="$extra_flags -DLIBCONFIG_INCLUDE_DIR=/local/include"
-    extra_flags="$extra_flags -DLIBCONFIG_LIBRARY=/local/lib/libconfig++.dll.a"
+    extra_flags="$extra_flags -DLIBCONFIG_LIBRARY=/local/lib/libconfig.dll.a"
 fi
 if [ -n "$MULTILIB" ]; then
     extra_flags="$extra_flags -DMULTILIB=ON"
