@@ -21,7 +21,7 @@ elif [[ $LLVM_VERSION == release_* ]]; then
 else
     rm -f llvm-$LLVM_VERSION.src.tar.gz
     curl --fail -O "http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.{gz,xz}"
-    if [ -e llvm-$LLVM_VERSION.src.tar.gz]; then
+    if [ -e llvm-$LLVM_VERSION.src.tar.gz ]; then
         tar xzf llvm-$LLVM_VERSION.src.tar.gz
     else
         tar xJf llvm-$LLVM_VERSION.src.tar.xz
