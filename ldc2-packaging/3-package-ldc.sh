@@ -11,7 +11,7 @@ fi
 cp $SRC_DIR/ldc/LICENSE $PKG_DIR
 
 if [ "$OS" == "mingw" ]; then
-    cp /local/bin/libconfig++-9.dll $PKG_DIR/bin
+    cp /local/bin/libconfig-9.dll $PKG_DIR/bin
 fi
 
 cd $BUILD_ROOT
