@@ -52,6 +52,10 @@ case "$OS" in
     osx)
         export CMAKE_GENERATOR=
         export MAKE=make
+        # On OS X, force Clang to use the libc++ standard library. LLVM 3.5
+        # refuses to be built on OS X 10.8.5 otherwise (with Xcode 5.1.1 being
+        # the last supported version there), as libstdc++.so.6 is too old.
+        export USE_LIBCPP=true
         ;;
     mingw)
         export CMAKE_GENERATOR='-G Ninja'

@@ -24,6 +24,12 @@ if [ "$OS" == "mingw" ]; then
     extra_flags="$extra_flags -DLIBCONFIG_INCLUDE_DIR=/local/include"
     extra_flags="$extra_flags -DLIBCONFIG_LIBRARY=/local/lib/libconfig.dll.a"
 fi
+if [ -n "$USE_LIBCPP" ]; then
+    # If LLVM was built against libc++, we need to do the same with LDC to be
+    # able to link against it.
+    extra_flags="$extra_flags -DCMAKE_CXX_FLAGS='-stdlib=libc++' \
+        -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'"
+fi
 if [ -n "$MULTILIB" ]; then
     extra_flags="$extra_flags -DMULTILIB=ON"
 fi
