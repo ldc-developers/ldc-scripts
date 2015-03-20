@@ -6,3 +6,5 @@ dmd-testsuite/
 ldc2-packaging/
    Building LDC2 from scratch and preparing a DMD-style package
 
+ldc2-win64/
+   Building LDC2 from scratch with VS 2013 and preparing a DMD-style package

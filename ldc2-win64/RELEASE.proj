@@ -1,0 +1,217 @@
+﻿<Project DefaultTargets="All" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+    MSBuild script to create release version of LDC.
+    Configures and compiles LLVM and LDC and creates release zip file.
+    Uses ninja to reduce compile time.
+  -->
+
+  <PropertyGroup>
+    <!-- General setup -->
+    <!-- The CMake build type -->
+    <CMakeBuildType>Release</CMakeBuildType>
+    <!-- Temporary directory for all build artefacts -->
+    <BuildDir>D:\Temp\LDC-BUILD</BuildDir>
+    <SrcDir>$(BuildDir)\src</SrcDir>
+    <WrkDir>$(BuildDir)\wrk</WrkDir>
+    <InstallDir>$(BuildDir)\install</InstallDir>
+    <!-- CMake executable -->
+    <CMakeExe>cmake</CMakeExe>
+    <!-- Git executable -->
+    <GitExe>git</GitExe>
+    <!-- Ninja executable -->
+    <NinjaExe>ninja</NinjaExe>
+    <!-- 7zip executable -->
+    <SevenZipExe>C:\Program Files\7-Zip\7z.exe</SevenZipExe>
+    <!-- Python executable -->
+    <PythonExe>C:/Program Files/Python/Python33/python.exe</PythonExe>
+
+    <!-- LibConfig -->
+    <LibConfigSrcFile>D:\Software\LLVM\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
+    <LibConfigSrcDir>$(SrcDir)\libconfig-1.4.9</LibConfigSrcDir>
+    <LibConfigWrkDir>$(WrkDir)\libconfig</LibConfigWrkDir>
+    <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
+
+    <!-- LLVM -->
+    <LLVMSrcFile>D:\Software\LLVM\llvm-3.6.0.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.6.0.src</LLVMSrcDir>
+    <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
+    <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
+    <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
+
+    <!-- LDC -->
+    <LDCVersion>0.15.2</LDCVersion>
+    <LDCVersionSuffix>-beta1</LDCVersionSuffix>
+    <LDCGitSource>D:/OpenSource/ldc/ldc</LDCGitSource>
+    <LDCDRuntimeGitSource>D:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
+    <LDCPhobosGitSource>D:/OpenSource/ldc/ldc/runtime/phobos</LDCPhobosGitSource>
+    <LDCTestGitSource>D:/OpenSource/ldc/ldc/tests/d2/dmd-testsuite</LDCTestGitSource>
+    <LDCSrcDir>$(SrcDir)\ldc</LDCSrcDir>
+    <LDCWrkDir>$(WrkDir)\ldc</LDCWrkDir>
+    <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc</LDCInstallDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <LibConfigFiles Include="$(LibConfigSrcDir)\**;$(LibConfigWrkDir)\**;$(LibConfigInstallDir)\**"/>
+    <LLVMFiles Include="$(LLVMSrcDir)\**;$(LLVMWrkDir)\**;$(LLVMInstallDir)\**"/>
+    <LDCFiles Include="$(LDCSrcDir)\**;$(LDCWrkDir)\**;$(LDCInstallDir)\**"/>
+  </ItemGroup>
+
+  <Target Name="LibConfig">
+    <Delete Files="@(LibConfigFiles)" />
+    <MakeDir Directories="$(LibConfigSrcDir);$(LibConfigWrkDir)"/>
+    <CallTarget Targets="LibConfigCMakeLists"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LibConfigSrcDir)\.."/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LibConfigSrcDir)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
+    <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
+  </Target>
+
+  <Target Name="LLVM">
+    <Delete Files="@(LLVMFiles)" />
+    <MakeDir Directories="$(LLVMSrcDir);$(LLVMWrkDir)"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LLVMSrcDir)\.."/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
+    <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LLVMWrkDir)"/>
+  </Target>
+
+  <Target Name="LDC">
+    <Delete Files="@(LDCFiles)" />
+    <MakeDir Directories="$(LDCSrcDir);$(LDCWrkDir)"/>
+    <Exec Command="&quot;$(GitExe)&quot; clone --branch release-$(LDCVersion) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
+    <CallTarget Targets="LDCGitModules"/>
+    <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
+    <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LDCGitSource)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
+    <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
+    <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
+   </Target>
+
+  <Target Name="All">
+    <CallTarget Targets="LibConfig;LLVM;LDC"/>
+  </Target>
+
+  <Target Name="LDCGitModules">
+    <ItemGroup>
+      <Line Include="line01"><Text><![CDATA[
+[submodule "druntime"]
+	path = runtime/druntime
+	url = $(LDCDRuntimeGitSource)
+[submodule "phobos"]
+	path = runtime/phobos
+	url = $(LDCPhobosGitSource)
+[submodule "tests/d2/dmd-testsuite"]
+	path = tests/d2/dmd-testsuite
+	url = $(LDCTestGitSource)
+      ]]></Text>
+      </Line>
+    </ItemGroup>
+    <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+  </Target>
+
+  <Target Name="LibConfigCMakeLists">
+    <ItemGroup>
+      <Line Include="line01"><Text><![CDATA[
+# CMake build file for libconfig++
+
+cmake_minimum_required(VERSION 2.8)
+project(libconfig++)
+
+set(LIBCONFIG++_SOURCE_DIR ${PROJECT_SOURCE_DIR}/lib)
+set(LIBCONFIG++__BINARY_DIR ${PROJECT_BINARY_DIR})
+
+set(LIBCONFIG++_SOURCES
+    ${LIBCONFIG++_SOURCE_DIR}/grammar.c
+    ${LIBCONFIG++_SOURCE_DIR}/libconfig.c
+    ${LIBCONFIG++_SOURCE_DIR}/libconfigcpp.c++
+    ${LIBCONFIG++_SOURCE_DIR}/scanctx.c
+    ${LIBCONFIG++_SOURCE_DIR}/scanner.c
+    ${LIBCONFIG++_SOURCE_DIR}/strbuf.c
+    )
+
+include_directories(${LIBCONFIG++_SOURCE_DIR})
+
+add_definitions(
+    /DLIBCONFIGXX_STATIC
+    /DLIBCONFIG_STATIC
+  )
+
+if (MSVC)
+  add_definitions(
+      /DYY_NO_UNISTD_H
+      /DYY_USE_CONST
+      /DWIN32
+      /Zc:wchar_t /GR- /Gd
+      /D_CRT_SECURE_NO_WARNINGS
+      /wd4290
+  )
+endif (MSVC)
+
+foreach(file ${LIBCONFIG++_SOURCES})
+    if(file MATCHES ".*\\.c$")
+        set_source_files_properties(${file} PROPERTIES
+            LANGUAGE C
+            COMPILE_FLAGS /EHsc
+        )
+    else()
+        set_source_files_properties(${file} PROPERTIES
+            LANGUAGE CXX
+        )
+    endif()
+endforeach()
+
+add_library(libconfig++ STATIC ${LIBCONFIG++_SOURCES})
+
+set_target_properties(
+    libconfig++ PROPERTIES
+    ARCHIVE_OUTPUT_NAME libconfig++
+    LIBRARY_OUTPUT_NAME libconfig++
+    RUNTIME_OUTPUT_NAME libconfig++
+)
+      ]]></Text>
+      </Line>
+    </ItemGroup>
+    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+  </Target>
+
+  <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <InputFilename ParameterType="System.String" Required="true" />
+      <OutputFilename ParameterType="System.String" Required="true" />
+      <MatchExpression ParameterType="System.String" Required="true" />
+      <ReplacementText ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+              File.WriteAllText(
+                  OutputFilename,
+                  Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
+                  );
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="RenameDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <FromDirectory ParameterType="System.String" Required="true" />
+      <ToDirectory ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+              Directory.Move(FromDirectory, ToDirectory);
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+</Project>
