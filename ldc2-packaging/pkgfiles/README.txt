@@ -20,4 +20,4 @@ For further information, including on how to report bugs,
 please refer to the LDC wiki: http://wiki.dlang.org/LDC.
 
 
-[1] http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/rubenvb/gcc-4.8-dw2-release/i686-w64-mingw32-gcc-dw2-4.8.0-win32_rubenvb.7z/download
+[1] http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.1/threads-posix/dwarf/i686-4.9.1-release-posix-dwarf-rt_v3-rev1.7z/download
