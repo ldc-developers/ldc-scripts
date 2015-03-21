@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="All" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="All" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!--
     MSBuild script to create release version of LDC.
@@ -42,23 +42,30 @@
     <!-- LDC -->
     <LDCVersion>0.15.2</LDCVersion>
     <LDCVersionSuffix>-beta1</LDCVersionSuffix>
+
     <LDCGitSource>D:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>D:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
     <LDCPhobosGitSource>D:/OpenSource/ldc/ldc/runtime/phobos</LDCPhobosGitSource>
     <LDCTestGitSource>D:/OpenSource/ldc/ldc/tests/d2/dmd-testsuite</LDCTestGitSource>
+    <!-- Use the following properties to clone from GitHub
+    <LDCGitSource>https://github.com/ldc-developers/ldc.git</LDCGitSource>
+    <LDCDRuntimeGitSource>https://github.com/ldc-developers/druntime.git</LDCDRuntimeGitSource>
+    <LDCPhobosGitSource>https://github.com/ldc-developers/phobos.git</LDCPhobosGitSource>
+    <LDCTestGitSource>https://github.com/ldc-developers/dmd-testsuite.git</LDCTestGitSource>
+    -->
     <LDCSrcDir>$(SrcDir)\ldc</LDCSrcDir>
     <LDCWrkDir>$(WrkDir)\ldc</LDCWrkDir>
     <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc</LDCInstallDir>
   </PropertyGroup>
 
   <ItemGroup>
-    <LibConfigFiles Include="$(LibConfigSrcDir)\**;$(LibConfigWrkDir)\**;$(LibConfigInstallDir)\**"/>
-    <LLVMFiles Include="$(LLVMSrcDir)\**;$(LLVMWrkDir)\**;$(LLVMInstallDir)\**"/>
-    <LDCFiles Include="$(LDCSrcDir)\**;$(LDCWrkDir)\**;$(LDCInstallDir)\**"/>
+    <LibConfigDirectories Include="$(LibConfigSrcDir);$(LibConfigWrkDir);$(LibConfigInstallDir)"/>
+    <LLVMDirectories Include="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
+    <LDCDirectories Include="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
   </ItemGroup>
 
   <Target Name="LibConfig">
-    <Delete Files="@(LibConfigFiles)" />
+    <RemoveDir Directories="@(LibConfigDirectories)" />
     <MakeDir Directories="$(LibConfigSrcDir);$(LibConfigWrkDir)"/>
     <CallTarget Targets="LibConfigCMakeLists"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LibConfigSrcDir)\.."/>
@@ -67,25 +74,25 @@
   </Target>
 
   <Target Name="LLVM">
-    <Delete Files="@(LLVMFiles)" />
-    <MakeDir Directories="$(LLVMSrcDir);$(LLVMWrkDir)"/>
+    <RemoveDir Directories="@(LLVMDirectories)" />
+    <MakeDir Directories="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LLVMSrcDir)\.."/>
     <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LLVMWrkDir)"/>
   </Target>
 
   <Target Name="LDC">
-    <Delete Files="@(LDCFiles)" />
-    <MakeDir Directories="$(LDCSrcDir);$(LDCWrkDir)"/>
+    <RemoveDir Directories="@(LDCDirectories)" />
+    <MakeDir Directories="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; clone --branch release-$(LDCVersion) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LDCGitSource)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
     <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
     <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
-   </Target>
+  </Target>
 
   <Target Name="All">
     <CallTarget Targets="LibConfig;LLVM;LDC"/>
