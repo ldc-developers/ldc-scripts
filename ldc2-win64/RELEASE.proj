@@ -11,7 +11,7 @@
     <!-- The CMake build type -->
     <CMakeBuildType>Release</CMakeBuildType>
     <!-- Temporary directory for all build artefacts -->
-    <BuildDir>D:\Temp\LDC-BUILD</BuildDir>
+    <BuildDir>C:\Temp\LDC-BUILD</BuildDir>
     <SrcDir>$(BuildDir)\src</SrcDir>
     <WrkDir>$(BuildDir)\wrk</WrkDir>
     <InstallDir>$(BuildDir)\install</InstallDir>
@@ -27,14 +27,14 @@
     <PythonExe>C:/Program Files/Python/Python33/python.exe</PythonExe>
 
     <!-- LibConfig -->
-    <LibConfigSrcFile>D:\Software\LLVM\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
+    <LibConfigSrcFile>C:\Software\LibConfig\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
     <LibConfigSrcDir>$(SrcDir)\libconfig-1.4.9</LibConfigSrcDir>
     <LibConfigWrkDir>$(WrkDir)\libconfig</LibConfigWrkDir>
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
     <!-- LLVM -->
-    <LLVMSrcFile>D:\Software\LLVM\llvm-3.6.0.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.6.0.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.6.1.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.6.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
