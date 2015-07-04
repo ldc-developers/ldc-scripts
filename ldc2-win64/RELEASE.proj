@@ -24,7 +24,7 @@
     <!-- 7zip executable -->
     <SevenZipExe>C:\Program Files\7-Zip\7z.exe</SevenZipExe>
     <!-- Python executable -->
-    <PythonExe>C:/Program Files/Python/Python33/python.exe</PythonExe>
+    <PythonExe>C:/Program Files/Python/Python34/python.exe</PythonExe>
 
     <!-- LibConfig -->
     <LibConfigSrcFile>C:\Software\LibConfig\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
@@ -41,12 +41,12 @@
 
     <!-- LDC -->
     <LDCVersion>0.15.2</LDCVersion>
-    <LDCVersionSuffix>-beta1</LDCVersionSuffix>
+    <LDCVersionSuffix>-beta2</LDCVersionSuffix>
 
-    <LDCGitSource>D:/OpenSource/ldc/ldc</LDCGitSource>
-    <LDCDRuntimeGitSource>D:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
-    <LDCPhobosGitSource>D:/OpenSource/ldc/ldc/runtime/phobos</LDCPhobosGitSource>
-    <LDCTestGitSource>D:/OpenSource/ldc/ldc/tests/d2/dmd-testsuite</LDCTestGitSource>
+    <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
+    <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
+    <LDCPhobosGitSource>C:/OpenSource/ldc/ldc/runtime/phobos</LDCPhobosGitSource>
+    <LDCTestGitSource>C:/OpenSource/ldc/ldc/tests/d2/dmd-testsuite</LDCTestGitSource>
     <!-- Use the following properties to clone from GitHub
     <LDCGitSource>https://github.com/ldc-developers/ldc.git</LDCGitSource>
     <LDCDRuntimeGitSource>https://github.com/ldc-developers/druntime.git</LDCDRuntimeGitSource>
