@@ -38,7 +38,7 @@ extra_flags=
 if [ "$OS" == "linux" ]; then
     # We build on Ubuntu 12.04 with a backported gcc 4.9.
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
-    extra_flags="$extra_flags -DEXTRA_CXXFLAGS='-static-libstc++' -DCMAKE_EXE_LINKER_FLAGS='-Wl,-rpath,\$ORIGIN'"
+    extra_flags="$extra_flags -DEXTRA_CXXFLAGS='-static-libstdc++' -DCMAKE_EXE_LINKER_FLAGS='-Wl,-rpath,\$ORIGIN'"
 fi
 if [ "$OS" == "mingw" ]; then
     # Tailored to the setup described in
