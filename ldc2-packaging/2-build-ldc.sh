@@ -6,8 +6,29 @@ mkdir -p $SRC_DIR
 cd $SRC_DIR
 
 rm -rf ldc
-git clone --recursive https://github.com/ldc-developers/ldc.git
-cd ldc && git checkout release-$LDC_VERSION && git submodule update
+if [ -z $LDC_SOURCE ]; then
+    git clone --recursive https://github.com/ldc-developers/ldc.git
+    cd ldc
+elif [ -d $LDC_SOURCE -a -d $LDC_SOURCE/.git ]; then
+    git clone $LDC_SOURCE
+    cd ldc
+    cat <<EOF >.gitmodules
+[submodule "druntime"]
+	path = runtime/druntime
+	url = $LDC_SOURCE/runtime/druntime
+[submodule "phobos"]
+	path = runtime/phobos
+	url = $LDC_SOURCE/runtime/phobos
+[submodule "tests/d2/dmd-testsuite"]
+	path = tests/d2/dmd-testsuite
+	url = $LDC_SOURCE/tests/d2/dmd-testsuite
+EOF
+    git submodule init
+else
+    echo "Environment variable LDC_SOURCE does not point to git folder"
+    exit 1
+fi
+git checkout release-$LDC_VERSION && git submodule update
 
 rm -rf $WORK_DIR/ldc
 mkdir -p $WORK_DIR/ldc
