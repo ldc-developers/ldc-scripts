@@ -33,15 +33,15 @@
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.6.1.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.6.1.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.0rc3.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.7.0rc3.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
 
     <!-- LDC -->
-    <LDCVersion>0.15.2</LDCVersion>
-    <LDCVersionSuffix>-beta2</LDCVersionSuffix>
+    <LDCVersion>0.16.0</LDCVersion>
+    <LDCVersionSuffix>-alpha2</LDCVersionSuffix>
 
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
@@ -69,7 +69,7 @@
     <MakeDir Directories="$(LibConfigSrcDir);$(LibConfigWrkDir)"/>
     <CallTarget Targets="LibConfigCMakeLists"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LibConfigSrcDir)\.."/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LibConfigSrcDir)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LibConfigSrcDir)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
   </Target>
 
@@ -77,7 +77,7 @@
     <RemoveDir Directories="@(LLVMDirectories)" />
     <MakeDir Directories="@(LLVMDirectories)"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LLVMSrcDir)\.."/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LLVMWrkDir)"/>
   </Target>
 
@@ -88,7 +88,7 @@
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja --config $(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
     <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
     <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
