@@ -34,32 +34,31 @@ rm -rf $WORK_DIR/ldc
 mkdir -p $WORK_DIR/ldc
 cd $WORK_DIR/ldc
 
-extra_flags=
+extra_flags=()
 if [ "$OS" == "linux" ]; then
     # We build on Ubuntu 12.04 with a backported gcc 4.9.
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
-    extra_flags="$extra_flags -DEXTRA_CXXFLAGS='-static-libstdc++' -DCMAKE_EXE_LINKER_FLAGS='-Wl,-rpath,\$ORIGIN'"
+    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++ -Wl,-rpath,\$ORIGIN'")
 fi
 if [ "$OS" == "mingw" ]; then
     # Tailored to the setup described in
     # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
     # We should add support for starting from a clean MinGW/MSYS installation.
-    extra_flags="$extra_flags -DLIBCONFIG_INCLUDE_DIR=/local/include"
-    extra_flags="$extra_flags -DLIBCONFIG_LIBRARY=/local/lib/libconfig.dll.a"
+    extra_flags+=("-DLIBCONFIG_INCLUDE_DIR=/local/include")
+    extra_flags+=("-DLIBCONFIG_LIBRARY=/local/lib/libconfig.dll.a")
 fi
 if [ -n "$USE_LIBCPP" ]; then
     # If LLVM was built against libc++, we need to do the same with LDC to be
     # able to link against it.
-    extra_flags="$extra_flags -DCMAKE_CXX_FLAGS='-stdlib=libc++' \
-        -DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'"
+    extra_flags+=("-DCMAKE_CXX_FLAGS='-stdlib=libc++'" "-DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'")
 fi
 if [ -n "$MULTILIB" ]; then
-    extra_flags="$extra_flags -DMULTILIB=ON"
+    extra_flags+=("-DMULTILIB=ON")
 fi
 
 cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
     -DCMAKE_BUILD_TYPE=Release -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR \
-    -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import $extra_flags
+    -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import "${extra_flags[@]}"
 rm -rf $PKG_DIR
 $MAKE install
 
