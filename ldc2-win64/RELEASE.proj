@@ -33,15 +33,15 @@
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.0rc3.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.7.0rc3.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.0.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.7.0.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
 
     <!-- LDC -->
     <LDCVersion>0.16.0</LDCVersion>
-    <LDCVersionSuffix>-alpha2</LDCVersionSuffix>
+    <LDCVersionSuffix>-alpha3</LDCVersionSuffix>
 
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
