@@ -25,3 +25,6 @@ else
     tar cvf $PKG_BASE.tar $PKG_BASE
     xz -z -e -9 $PKG_BASE.tar
 fi
+
+cd $SRC_DIR
+tar czf ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz --exclude-vcs --transform=s/ldc/ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src/ ldc
