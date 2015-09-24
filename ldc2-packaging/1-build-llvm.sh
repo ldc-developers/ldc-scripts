@@ -7,9 +7,9 @@ cd $SRC_DIR
 
 if [[ $LLVM_VERSION == /* ]]; then
     if [ "${LLVM_VERSION##*.}" == "gz" ]; then
-        tar xzf $LLVM_VERSION
+        $TAR xzf $LLVM_VERSION
     else
-        tar xJf $LLVM_VERSION
+        $TAR xJf $LLVM_VERSION
     fi
     base=$(basename $LLVM_VERSION)
 
@@ -22,9 +22,9 @@ else
     rm -f llvm-$LLVM_VERSION.src.tar.gz llvm-$LLVM_VERSION.src.tar.xz
     curl --fail -O "http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.{gz,xz}"
     if [ -e llvm-$LLVM_VERSION.src.tar.gz ]; then
-        tar xzf llvm-$LLVM_VERSION.src.tar.gz
+        $TAR xzf llvm-$LLVM_VERSION.src.tar.gz
     else
-        tar xJf llvm-$LLVM_VERSION.src.tar.xz
+        $TAR xJf llvm-$LLVM_VERSION.src.tar.xz
     fi
 
     rm -rf llvm
@@ -42,6 +42,9 @@ else
     extra_flags=
     if [ -n "$USE_LIBCPP" ]; then
         extra_flags="$extra_flags --enable-libcpp"
+    fi
+    if [ "$OS" == "solaris" ]; then
+        extra_flags="$extra_flags --with-python=/usr/bin/python3.4"
     fi
     $SRC_DIR/llvm/configure --enable-optimized --disable-assertions \
         --enable-targets=x86 --prefix=$INTERMEDIATE_DIR $extra_flags

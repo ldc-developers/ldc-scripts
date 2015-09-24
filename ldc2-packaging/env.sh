@@ -28,6 +28,7 @@ if [ -z "$OS" ]; then
     case "$(uname -s 2>&1)" in
         Linux) export OS=linux ;;
         Darwin) export OS=osx ;;
+        SunOS) export OS=solaris ;;
         *) echo 'Could not auto-detect operating system, set the OS environment variable.' ;;
     esac
     echo "Auto-detected OS, building for '${OS}'."
@@ -48,10 +49,12 @@ case "$OS" in
     linux)
         export CMAKE_GENERATOR=
         export MAKE=make
+        export TAR=tar
         ;;
     osx)
         export CMAKE_GENERATOR=
         export MAKE=make
+        export TAR=tar
         # On OS X, force Clang to use the libc++ standard library. LLVM 3.5
         # refuses to be built on OS X 10.8.5 otherwise (with Xcode 5.1.1 being
         # the last supported version there), as libstdc++.so.6 is too old.
@@ -60,9 +63,15 @@ case "$OS" in
     mingw)
         export CMAKE_GENERATOR='-G Ninja'
         export MAKE=ninja
+        export TAR=tar
+        ;;
+    solaris)
+        export CMAKE_GENERATOR=
+        export MAKE=gmake
+        export TAR=gtar
         ;;
     *)
-        echo "Invalid target operating system (\$OS must be one of linux/osx/mingw)."
+        echo "Invalid target operating system (\$OS must be one of linux/osx/mingw/solaris)."
         exit 1
         ;;
 esac
