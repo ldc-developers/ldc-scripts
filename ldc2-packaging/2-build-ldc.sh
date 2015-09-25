@@ -40,6 +40,11 @@ if [ "$OS" == "linux" ]; then
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
     extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++ -Wl,-rpath,\$ORIGIN'")
 fi
+if [ "$OS" == "solaris" ]; then
+    # We build on OpenSolaris 11.2 with additional installed gcc 4.8.
+    # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
+    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++'")
+fi
 if [ "$OS" == "mingw" ]; then
     # Tailored to the setup described in
     # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
@@ -78,7 +83,7 @@ if [ "$OS" == "osx" ]; then
     libfile=$(otool -L $PKG_DIR/bin/ldc2 | grep libconfig | cut -f1 -d ' ' | xargs)
     cp $libfile $PKG_DIR/bin
     install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldc2
-elif [ "$OS" == "linux" ]; then
+elif [ "$OS" == "linux" -o "$OS" == "solaris" ]; then
     libfile=$(ldd $PKG_DIR/bin/ldc2 | grep libconfig | cut -d ' ' -f 3)
     cp $libfile $PKG_DIR/bin
 fi
