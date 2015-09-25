@@ -28,6 +28,7 @@ if [ -z "$OS" ]; then
     case "$(uname -s 2>&1)" in
         Linux) export OS=linux ;;
         Darwin) export OS=osx ;;
+        FreeBSD) export OS=freebsd ;;
         SunOS) export OS=solaris ;;
         *) echo 'Could not auto-detect operating system, set the OS environment variable.' ;;
     esac
@@ -63,6 +64,11 @@ case "$OS" in
     mingw)
         export CMAKE_GENERATOR='-G Ninja'
         export MAKE=ninja
+        export TAR=tar
+        ;;
+    freebsd)
+        export CMAKE_GENERATOR=
+        export MAKE=gmake
         export TAR=tar
         ;;
     solaris)
