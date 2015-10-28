@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -z "$BUILD_ROOT" ]; then
     cat <<EOM
