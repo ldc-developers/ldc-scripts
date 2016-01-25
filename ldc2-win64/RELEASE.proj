@@ -32,16 +32,26 @@
     <LibConfigWrkDir>$(WrkDir)\libconfig</LibConfigWrkDir>
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
+    <!-- LibCurl -->
+    <LibCurlArchiveFile>C:\Software\curl\libcurl-7.46.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
+    <LibCurlArchiveDir>$(InstallDir)\libcurl-7.46.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
+    <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\bin64\libcurl.dll</LibCurlArchiveDllFile>
+    <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\lib64\curl.lib</LibCurlArchiveLibFile>
+    <!-- 32bit files:
+    <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\bin\libcurl.dll</LibCurlArchiveDllFile>
+    <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\lib32mscoff\curl.lib</LibCurlArchiveLibFile>
+    -->
+
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.0.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.7.0.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.1.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.7.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
 
     <!-- LDC -->
-    <LDCVersion>0.16.0</LDCVersion>
-    <LDCVersionSuffix>-alpha3</LDCVersionSuffix>
+    <LDCVersion>0.17.0</LDCVersion>
+    <LDCVersionSuffix>-beta2</LDCVersionSuffix>
 
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
@@ -56,10 +66,12 @@
     <LDCSrcDir>$(SrcDir)\ldc</LDCSrcDir>
     <LDCWrkDir>$(WrkDir)\ldc</LDCWrkDir>
     <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc</LDCInstallDir>
+    <LDCArchiveFileName>ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip</LDCArchiveFileName>
   </PropertyGroup>
 
   <ItemGroup>
     <LibConfigDirectories Include="$(LibConfigSrcDir);$(LibConfigWrkDir);$(LibConfigInstallDir)"/>
+    <LibCurlDirectories Include="$(LibCurlArchiveDir)"/>
     <LLVMDirectories Include="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
     <LDCDirectories Include="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
   </ItemGroup>
@@ -73,6 +85,12 @@
     <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
   </Target>
 
+  <Target Name="LibCurl">
+    <RemoveDir Directories="@(LibCurlArchiveDir)" />
+    <MakeDir Directories="$(LibCurlArchiveDir)"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibCurlArchiveFile)&quot;" WorkingDirectory="$(LibCurlArchiveDir)"/>
+  </Target>
+
   <Target Name="LLVM">
     <RemoveDir Directories="@(LLVMDirectories)" />
     <MakeDir Directories="@(LLVMDirectories)"/>
@@ -84,6 +102,7 @@
   <Target Name="LDC">
     <RemoveDir Directories="@(LDCDirectories)" />
     <MakeDir Directories="@(LDCDirectories)"/>
+    <Delete Files="$(LDCInstallDir)\$(LDCArchiveFileName)"/>
     <Exec Command="&quot;$(GitExe)&quot; clone --branch release-$(LDCVersion) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
@@ -91,7 +110,9 @@
     <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig++.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
     <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
+    <Copy SourceFiles="$(LibCurlArchiveDllFile)" DestinationFolder="$(LDCInstallDir)\bin"/>
+    <Copy SourceFiles="$(LibCurlArchiveLibFile)" DestinationFolder="$(LDCInstallDir)\lib"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 $(LDCArchiveFileName) $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
   </Target>
 
   <Target Name="All">
