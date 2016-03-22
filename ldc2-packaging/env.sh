@@ -38,6 +38,8 @@ fi
 
 if [ -z "$ARCH" ]; then
     case "$(uname -m 2>&1)" in
+        aarch64) export ARCH=aarch64 ;;
+        arm*) export ARCH=arm ;;
         i686) export ARCH=x86 ;;
         x86_64) export ARCH=x86_64 ;;
         *) echo 'Could not auto-detect architecture, set the ARCH environment variable.' ;;
@@ -86,10 +88,12 @@ case "$OS" in
 esac
 
 case "$ARCH" in
+    aarch64) ;;
+    arm) ;;
     x86) ;;
     x86_64) export MULTILIB=true ;;
     *)
-        echo "Invalid target architecture (\$ARCH must be one of x86/x86_64)."
+        echo "Invalid target architecture (\$ARCH must be one of aarch64/arm/x86/x86_64)."
         exit 1
         ;;
 esac

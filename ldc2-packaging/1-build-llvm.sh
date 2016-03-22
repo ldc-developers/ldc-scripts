@@ -47,7 +47,7 @@ else
         extra_flags="$extra_flags --with-python=/usr/bin/python3.4"
     fi
     $SRC_DIR/llvm/configure --enable-optimized --disable-assertions \
-        --enable-targets=x86 --prefix=$INTERMEDIATE_DIR $extra_flags
+        --enable-targets=$ARCH --prefix=$INTERMEDIATE_DIR $extra_flags
 fi
 
 $MAKE install
