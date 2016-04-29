@@ -10,7 +10,7 @@ if [ -z $LDC_SOURCE ]; then
     git clone --recursive https://github.com/ldc-developers/ldc.git
     cd ldc
 elif [ -d $LDC_SOURCE -a -d $LDC_SOURCE/.git ]; then
-    git clone $LDC_SOURCE
+    git clone $LDC_SOURCE ldc
     cd ldc
     cat <<EOF >.gitmodules
 [submodule "druntime"]
