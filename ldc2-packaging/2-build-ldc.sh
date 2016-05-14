@@ -38,7 +38,7 @@ extra_flags=()
 if [ "$OS" == "linux" ]; then
     # We build on Ubuntu 12.04 with a backported gcc 4.9.
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
-    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++ -Wl,-rpath,\$ORIGIN'")
+    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++'")
 fi
 if [ "$OS" == "solaris" ]; then
     # We build on OpenSolaris 11.2 with additional installed gcc 4.8.
@@ -83,8 +83,14 @@ if [ "$OS" == "osx" ]; then
     libfile=$(otool -L $PKG_DIR/bin/ldc2 | grep libconfig | cut -f1 -d ' ' | xargs)
     cp $libfile $PKG_DIR/bin
     install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldc2
-elif [ "$OS" == "linux" -o "$OS" == "freebsd" -o "$OS" == "solaris" ]; 
+elif [ "$OS" == "linux" -o "$OS" == "freebsd" -o "$OS" == "solaris" ];
 then
+    if [ "$OS" == "linux" ];
+    then
+        # patchelf is available at https://github.com/NixOS/patchelf
+        patchelf --set-rpath \$ORIGIN --force-rpath $PKG_DIR/bin/ldc2
+        patchelf --set-rpath \$ORIGIN --force-rpath $PKG_DIR/bin/ldmd2
+    fi
     libfile=$(ldd $PKG_DIR/bin/ldc2 | grep libconfig | cut -d ' ' -f 3)
     cp $libfile $PKG_DIR/bin
 fi
