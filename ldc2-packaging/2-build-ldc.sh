@@ -55,7 +55,11 @@ fi
 if [ -n "$USE_LIBCPP" ]; then
     # If LLVM was built against libc++, we need to do the same with LDC to be
     # able to link against it.
-    extra_flags+=("-DCMAKE_CXX_FLAGS='-stdlib=libc++'" "-DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'")
+    if [ "$OS" == "osx" ]; then
+        extra_flags+=("-DCMAKE_CXX_FLAGS='-stdlib=libc++'" "-DCMAKE_EXE_LINKER_FLAGS='-lc++'")
+    else
+        extra_flags+=("-DCMAKE_CXX_FLAGS='-stdlib=libc++'" "-DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'")
+    fi
 fi
 if [ -n "$MULTILIB" ]; then
     extra_flags+=("-DMULTILIB=ON")
