@@ -116,6 +116,15 @@ EOM
     exit 1
 fi
 
+if [ -z "$DUB_VERSION" ]; then
+    cat <<EOM
+Set DUB_VERSION to the Dub version to build (e.g. 'v1.0.0').
+
+This will be used in the git checkout command.
+EOM
+    exit 1
+fi
+
 export PKG_BASE=ldc2-$LDC_VERSION$LDC_VERSION_SUFFIX-$OS-$ARCH
 
 set -ex
