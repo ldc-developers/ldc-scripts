@@ -49,9 +49,14 @@
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
 
+    <!-- DUB -->
+    <DUBVersion>v1.0.0</DUBVersion>
+    <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
+    <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
+
     <!-- LDC -->
-    <LDCVersion>0.17.0</LDCVersion>
-    <LDCVersionSuffix>-beta2</LDCVersionSuffix>
+    <LDCVersion>1.1.0</LDCVersion>
+    <LDCVersionSuffix>-alpha1</LDCVersionSuffix>
 
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
@@ -73,6 +78,7 @@
     <LibConfigDirectories Include="$(LibConfigSrcDir);$(LibConfigWrkDir);$(LibConfigInstallDir)"/>
     <LibCurlDirectories Include="$(LibCurlArchiveDir)"/>
     <LLVMDirectories Include="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
+    <DUBDirectories Include="$(DUBSrcDir)"/>
     <LDCDirectories Include="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
   </ItemGroup>
 
@@ -104,7 +110,6 @@
   <Target Name="LDC">
     <RemoveDir Directories="@(LDCDirectories)" />
     <MakeDir Directories="@(LDCDirectories)"/>
-    <Delete Files="$(InstallDir)\$(LDCArchiveFileName)"/>
     <Exec Command="&quot;$(GitExe)&quot; clone --branch release-$(LDCVersion) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
@@ -116,11 +121,25 @@
     <Copy SourceFiles="$(LibCurlArchiveDllFile)" DestinationFolder="$(LDCInstallDir)\bin"/>
     <Copy SourceFiles="$(LibCurlArchiveLibFile)" DestinationFolder="$(LDCInstallDir)\lib"/>
     <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCInstallDir)\bin"/>
+  </Target>
+
+  <Target Name="DUB">
+    <RemoveDir Directories="@(DUBDirectories)" />
+    <MakeDir Directories="@(DUBDirectories)"/>
+    <Exec Command="&quot;$(GitExe)&quot; clone $(DUBGitSource) dub" WorkingDirectory="$(DUBSrcDir)\.."/>
+    <Exec Command="&quot;$(GitExe)&quot; checkout $(DUBVersion)" WorkingDirectory="$(DUBSrcDir)"/>
+    <ReplaceFileText InputFilename="$(DUBSrcDir)\build.cmd" OutputFilename="$(DUBSrcDir)\build.cmd" MatchExpression="curl.lib" ReplacementText="&quot;$(LDCInstallDir)\lib\curl.lib&quot;"/>
+    <Exec Command="(set DC=&quot;$(LDCInstallDir)\bin\ldmd2&quot;) &amp; &quot;$(DUBSrcDir)\build.cmd&quot;" WorkingDirectory="$(DUBSrcDir)"/>
+    <Copy SourceFiles="$(DUBSrcDir)\bin\dub.exe" DestinationFolder="$(LDCInstallDir)\bin"/>
+  </Target>
+
+  <Target Name="ZIP">
+    <Delete Files="$(InstallDir)\$(LDCArchiveFileName)"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 $(LDCArchiveFileName) $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
   </Target>
 
   <Target Name="All">
-    <CallTarget Targets="LibConfig;LLVM;LDC"/>
+    <CallTarget Targets="LibConfig;LLVM;LD;DUB;ZIP"/>
   </Target>
 
   <Target Name="LDCGitModules">
