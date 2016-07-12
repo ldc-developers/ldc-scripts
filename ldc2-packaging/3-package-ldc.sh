@@ -14,6 +14,9 @@ if [ "$OS" == "mingw" ]; then
     cp /local/bin/libconfig-9.dll $PKG_DIR/bin
 fi
 
+# Add Dub settings file to package
+cp -r pkgfiles/dub $PKG_DIR/etc
+
 cd $BUILD_ROOT
 rm -rf $PKG_BASE
 mv $PKG_DIR $PKG_BASE
