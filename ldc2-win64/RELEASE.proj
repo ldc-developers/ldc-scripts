@@ -159,12 +159,12 @@
   </Target>
 
   <Target Name="All">
-    <CallTarget Targets="LibConfig;LLVM;LDC;DUB;ZIP"/>
+    <CallTarget Targets="LibConfig;LLVM;LibCurl;LDC;DUB;ZIP"/>
   </Target>
 
   <Target Name="LDCGitModules">
     <ItemGroup>
-      <Line Include="line01"><Text><![CDATA[
+      <Line1 Include="line01"><Text><![CDATA[
 [submodule "druntime"]
 	path = runtime/druntime
 	url = $(LDCDRuntimeGitSource)
@@ -175,14 +175,14 @@
 	path = tests/d2/dmd-testsuite
 	url = $(LDCTestGitSource)
       ]]></Text>
-      </Line>
+      </Line1>
     </ItemGroup>
-    <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+    <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line1->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
   </Target>
 
   <Target Name="LibConfigCMakeLists">
     <ItemGroup>
-      <Line Include="line01"><Text><![CDATA[
+      <Line2 Include="line01"><Text><![CDATA[
 # CMake build file for libconfig
 
 cmake_minimum_required(VERSION 2.8)
@@ -234,9 +234,9 @@ set_target_properties(
     RUNTIME_OUTPUT_NAME libconfig
 )
       ]]></Text>
-      </Line>
+      </Line2>
     </ItemGroup>
-    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line2->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
   </Target>
 
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
