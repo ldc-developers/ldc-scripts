@@ -31,7 +31,8 @@
     <!-- The CMake build type -->
     <CMakeBuildType>Release</CMakeBuildType>
     <!-- Temporary directory for all build artefacts -->
-    <BuildDir>C:\Temp\LDC-BUILD$(Platform)</BuildDir>
+    <BaseDir>C:\Temp</BaseDir>
+    <BuildDir>$(BaseDir)\LDC-BUILD$(Platform)</BuildDir>
     <SrcDir>$(BuildDir)\src</SrcDir>
     <WrkDir>$(BuildDir)\wrk</WrkDir>
     <InstallDir>$(BuildDir)\install</InstallDir>
@@ -57,10 +58,6 @@
     <LibCurlArchiveDir>$(InstallDir)\libcurl-7.46.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
     <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlBin)\libcurl.dll</LibCurlArchiveDllFile>
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
-    <!-- 32bit files:
-    <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\bin\libcurl.dll</LibCurlArchiveDllFile>
-    <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\lib32mscoff\curl.lib</LibCurlArchiveLibFile>
-    -->
 
     <!-- LLVM -->
     <LLVMSrcFile>C:\Software\LLVM\llvm-3.8.0.src.tar.xz</LLVMSrcFile>
@@ -78,16 +75,17 @@
     <LDCVersion>1.1.0</LDCVersion>
     <LDCVersionSuffix>-alpha1</LDCVersionSuffix>
 
+    <!-- Use the following properties to clone from local git folder
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
     <LDCDRuntimeGitSource>C:/OpenSource/ldc/ldc/runtime/druntime</LDCDRuntimeGitSource>
     <LDCPhobosGitSource>C:/OpenSource/ldc/ldc/runtime/phobos</LDCPhobosGitSource>
     <LDCTestGitSource>C:/OpenSource/ldc/ldc/tests/d2/dmd-testsuite</LDCTestGitSource>
-    <!-- Use the following properties to clone from GitHub
+    -->
     <LDCGitSource>https://github.com/ldc-developers/ldc.git</LDCGitSource>
     <LDCDRuntimeGitSource>https://github.com/ldc-developers/druntime.git</LDCDRuntimeGitSource>
     <LDCPhobosGitSource>https://github.com/ldc-developers/phobos.git</LDCPhobosGitSource>
     <LDCTestGitSource>https://github.com/ldc-developers/dmd-testsuite.git</LDCTestGitSource>
-    -->
+
     <LDCSrcDir>$(SrcDir)\ldc</LDCSrcDir>
     <LDCWrkDir>$(WrkDir)\ldc</LDCWrkDir>
     <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-$(WinName)-msvc</LDCInstallDir>
@@ -141,6 +139,26 @@
     <Copy SourceFiles="$(LibCurlArchiveDllFile)" DestinationFolder="$(LDCInstallDir)\bin"/>
     <Copy SourceFiles="$(LibCurlArchiveLibFile)" DestinationFolder="$(LDCInstallDir)\lib"/>
     <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCInstallDir)\bin"/>
+    <CallTarget Targets="LDCMultilib" Condition="'$(Platform)'' == 'X64'"/>
+  </Target>
+
+  <Target Name="LDCMultilib">
+    <PropertyGroup>
+      <LDCInstallDir32>$(BaseDir)\LDC-BUILDx86\install\ldc2-$(LDCVersion)$(LDCVersionSuffix)-win32-msvc</LDCInstallDir32>
+    </PropertyGroup>
+    <ItemGroup>
+      <_CopyItems Include="$(LDCInstallDir32)\lib\**"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(LDCInstallDir)\lib32"/>
+    <RenameDir FromDirectory="$(LDCInstallDir)\lib" ToDirectory="$(LDCInstallDir)\lib64"/>
+    <ReplaceFileText InputFilename="$(LDCInstallDir32)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf.tmp" MatchExpression="default:" ReplacementText="i686-pc-windows-msvc:"/>
+    <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf.tmp" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf.tmp" MatchExpression="/../lib" ReplacementText="/../lib32"/>
+    <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf.tmp" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf.tmp" MatchExpression="//.*" ReplacementText="//"/>
+    <ItemGroup>
+      <_FileContents Include="$([System.IO.File]::ReadAllText($(LDCInstallDir)\etc\ldc2.conf.tmp))"/>
+    </ItemGroup>
+    <WriteLinesToFile File="$(LDCInstallDir)\etc\ldc2.conf" Lines="@(_FileContents)" Overwrite="false" />
+    <Delete Files="$(LDCInstallDir)\etc\ldc2.conf.tmp"/>
   </Target>
 
   <Target Name="DUB">
