@@ -8,10 +8,30 @@
 
   <PropertyGroup>
     <!-- General setup -->
+    <Platform Condition="'$(Platform)' == '' ">x86</Platform>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(Platform)' == 'X64'">
+      <PropertyGroup>
+        <WinName>win64</WinName>
+        <CurlBin>bin64</CurlBin>
+        <CurlLib>lib64</CurlLib>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <WinName>win32</WinName>
+        <CurlBin>bin</CurlBin>
+        <CurlLib>lib32mscoff</CurlLib>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup>
     <!-- The CMake build type -->
     <CMakeBuildType>Release</CMakeBuildType>
     <!-- Temporary directory for all build artefacts -->
-    <BuildDir>C:\Temp\LDC-BUILD</BuildDir>
+    <BuildDir>C:\Temp\LDC-BUILD$(Platform)</BuildDir>
     <SrcDir>$(BuildDir)\src</SrcDir>
     <WrkDir>$(BuildDir)\wrk</WrkDir>
     <InstallDir>$(BuildDir)\install</InstallDir>
@@ -24,7 +44,7 @@
     <!-- 7zip executable -->
     <SevenZipExe>C:\Program Files\7-Zip\7z.exe</SevenZipExe>
     <!-- Python executable -->
-    <PythonExe>C:/Program Files/Python/Python34/python.exe</PythonExe>
+    <PythonExe>C:/Program Files/Python/Python35/python.exe</PythonExe>
 
     <!-- LibConfig -->
     <LibConfigSrcFile>C:\Software\LibConfig\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
@@ -35,19 +55,19 @@
     <!-- LibCurl -->
     <LibCurlArchiveFile>C:\Software\curl\libcurl-7.46.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
     <LibCurlArchiveDir>$(InstallDir)\libcurl-7.46.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
-    <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\bin64\libcurl.dll</LibCurlArchiveDllFile>
-    <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\lib64\curl.lib</LibCurlArchiveLibFile>
+    <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlBin)\libcurl.dll</LibCurlArchiveDllFile>
+    <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
     <!-- 32bit files:
     <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\bin\libcurl.dll</LibCurlArchiveDllFile>
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\lib32mscoff\curl.lib</LibCurlArchiveLibFile>
     -->
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.7.1.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.7.1.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.8.0.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.8.0.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
-    <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc;CppBackend</LLVMTargetsToBuild>
+    <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
 
     <!-- DUB -->
     <DUBVersion>v1.0.0</DUBVersion>
@@ -70,8 +90,8 @@
     -->
     <LDCSrcDir>$(SrcDir)\ldc</LDCSrcDir>
     <LDCWrkDir>$(WrkDir)\ldc</LDCWrkDir>
-    <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc</LDCInstallDir>
-    <LDCArchiveFileName>ldc2-$(LDCVersion)$(LDCVersionSuffix)-win64-msvc.zip</LDCArchiveFileName>
+    <LDCInstallDir>$(InstallDir)\ldc2-$(LDCVersion)$(LDCVersionSuffix)-$(WinName)-msvc</LDCInstallDir>
+    <LDCArchiveFileName>ldc2-$(LDCVersion)$(LDCVersionSuffix)-$(WinName)-msvc.zip</LDCArchiveFileName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -139,12 +159,12 @@
   </Target>
 
   <Target Name="All">
-    <CallTarget Targets="LibConfig;LLVM;LD;DUB;ZIP"/>
+    <CallTarget Targets="LibConfig;LLVM;LibCurl;LDC;DUB;ZIP"/>
   </Target>
 
   <Target Name="LDCGitModules">
     <ItemGroup>
-      <Line Include="line01"><Text><![CDATA[
+      <Line1 Include="line01"><Text><![CDATA[
 [submodule "druntime"]
 	path = runtime/druntime
 	url = $(LDCDRuntimeGitSource)
@@ -155,14 +175,14 @@
 	path = tests/d2/dmd-testsuite
 	url = $(LDCTestGitSource)
       ]]></Text>
-      </Line>
+      </Line1>
     </ItemGroup>
-    <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+    <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line1->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
   </Target>
 
   <Target Name="LibConfigCMakeLists">
     <ItemGroup>
-      <Line Include="line01"><Text><![CDATA[
+      <Line2 Include="line01"><Text><![CDATA[
 # CMake build file for libconfig
 
 cmake_minimum_required(VERSION 2.8)
@@ -214,9 +234,9 @@ set_target_properties(
     RUNTIME_OUTPUT_NAME libconfig
 )
       ]]></Text>
-      </Line>
+      </Line2>
     </ItemGroup>
-    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
+    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line2->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
   </Target>
 
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
