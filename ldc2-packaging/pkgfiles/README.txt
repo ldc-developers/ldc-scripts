@@ -1,20 +1,38 @@
 This is a standalone (DMD-style) binary package for LDC,
 the LLVM-based D compiler.
 
-No installation is required. Just make sure that the system
-linker (i.e., gcc) is on the executable search path when
-running the compiler.
+No installation is required, simply use the executables
+bin\ldc2.exe and/or bin\ldmd2.exe.
+Just make sure you have a Microsoft Visual C++ 2015
+installation for linking, either via Visual Studio 2015 or
+via the stand-alone Visual C++ Build Tools, both freely
+available from Microsoft.
 
-NOTE: LDC on Windows with VisualStudio
+The compiler configuration file is etc\ldc2.conf, and by
+default only include\d resp. include\d\ldc are in the
+module search path.
 
-LDC requires VS2015. To run the compiler you open the VS2015
-x64 Native Tools Command Prompt (for 64bit) the VS2015 x86
-Native Tools Command Prompt (for 32bit) and add LDC to the
-search path. DUB 1.0 works seamless together with LDC. If
-you have different D compilers installed then you need to
-use the --compiler=ldc2 option with DUB.
+The LDC package is portable and should be able to detect
+your Visual C++ installation automatically. By setting the
+LDC_VSDIR environment variable to your VS/VC folder, you
+can instruct LDC to detect a specific Visual C++
+installation.
+
+NOTE: Running LDC inside a 'VS Tools Command Prompt' is
+      deprecated.
+
+The Visual C++ detection is skipped when running LDC in a
+'VS Native/Cross Tools Command Prompt' (i.e., if the
+environment variable VSINSTALLDIR is set). Linking will
+thus be restricted to the selected target.
+
+DUB
+
+DUB 1.0 works seamlessly together with LDC. If you have
+different D compilers installed then you need to use the
+--compiler=ldc2 option with DUB.
 In order to avoid a dependency on the VS 2015 runtime, you
-cab add the following linker flags to your dub.json file:
+can add the following linker flags to your dub.json file:
 
 "lflags-windows-ldc": [
         "libcmt.lib",
@@ -22,20 +40,5 @@ cab add the following linker flags to your dub.json file:
         "/nodefaultlib:vcruntime.lib"
     ],
 
-
-NOTE: The MinGW/Win32 port *REQUIRES* a *RECENT* mingw-w64
-toolchain such as [1] (or newer). The reason for this are
-severe bugs in the thread-local storage implementation; do
-not expect GCC versions from earlier than Spring 2013
-and/or from mingw.org to produce usable binaries. LDC
-relies on DWARF 2-style (dw2) exception handling.
-
-The compiler configuration file is etc/ldc2.conf, and by
-default only import/ resp. import/ldc/ are on the module
-search path.
-
 For further information, including on how to report bugs,
 please refer to the LDC wiki: http://wiki.dlang.org/LDC.
-
-
-[1] http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.1/threads-posix/dwarf/i686-4.9.1-release-posix-dwarf-rt_v3-rev1.7z/download
