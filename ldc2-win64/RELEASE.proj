@@ -132,7 +132,13 @@
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig.lib&quot; " WorkingDirectory="$(LDCWrkDir)"/>
+    <!-- build bootstrap LDC using automatically detected D compiler -->
+    <MakeDir Directories="$(LDCWrkDir)\bootstrap"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig.lib&quot;" WorkingDirectory="$(LDCWrkDir)\bootstrap"/>
+    <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCWrkDir)\bootstrap\bin"/>
+    <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LDCWrkDir)\bootstrap"/>
+    <!-- rebuild LDC with bootstrap compiler -->
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig.lib&quot; -DD_COMPILER=&quot;$(LDCWrkDir)\bootstrap\bin\ldmd2.exe&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot;" WorkingDirectory="$(LDCWrkDir)"/>
     <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCWrkDir)\bin"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
     <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="(?i)$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
