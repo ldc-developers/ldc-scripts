@@ -103,7 +103,7 @@
   <Target Name="LibConfig">
     <RemoveDir Directories="@(LibConfigDirectories)" />
     <MakeDir Directories="$(LibConfigSrcDir);$(LibConfigWrkDir)"/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LibConfigSrcDir)\.."/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o. &gt; nul" WorkingDirectory="$(LibConfigSrcDir)\.."/>
     <Move SourceFiles="$(LibConfigSrcDir)\lib\libconfig.h" DestinationFiles="$(LibConfigSrcDir)\lib\libconfig.h.in" />
     <ReplaceFileText InputFilename="$(LibConfigSrcDir)\lib\libconfig.h.in" OutputFilename="$(LibConfigSrcDir)\lib\libconfig.h" MatchExpression="LIBCONFIG_EXPORTS" ReplacementText="LIBCONFIG_EXPORT"/>
     <CallTarget Targets="LibConfigCMakeLists"/>
@@ -114,13 +114,13 @@
   <Target Name="LibCurl">
     <RemoveDir Directories="@(LibCurlArchiveDir)" />
     <MakeDir Directories="$(LibCurlArchiveDir)"/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibCurlArchiveFile)&quot;" WorkingDirectory="$(LibCurlArchiveDir)"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibCurlArchiveFile)&quot; &gt; nul" WorkingDirectory="$(LibCurlArchiveDir)"/>
   </Target>
 
   <Target Name="LLVM">
     <RemoveDir Directories="@(LLVMDirectories)" />
     <MakeDir Directories="@(LLVMDirectories)"/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o." WorkingDirectory="$(LLVMSrcDir)\.."/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o. &gt; nul" WorkingDirectory="$(LLVMSrcDir)\.."/>
     <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LLVMWrkDir)"/>
   </Target>
@@ -173,7 +173,7 @@
 
   <Target Name="ZIP">
     <Delete Files="$(InstallDir)\$(LDCArchiveFileName)"/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 $(LDCArchiveFileName) $(LDCInstallDir)" WorkingDirectory="$(LDCInstallDir)\.."/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 $(LDCArchiveFileName) $(LDCInstallDir) &gt; nul" WorkingDirectory="$(LDCInstallDir)\.."/>
   </Target>
 
   <Target Name="All">
