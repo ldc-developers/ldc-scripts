@@ -54,26 +54,26 @@
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
     <!-- LibCurl -->
-    <LibCurlArchiveFile>C:\Software\curl\libcurl-7.46.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
-    <LibCurlArchiveDir>$(InstallDir)\libcurl-7.46.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
+    <LibCurlArchiveFile>C:\Software\curl\libcurl-7.51.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
+    <LibCurlArchiveDir>$(InstallDir)\libcurl-7.51.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
     <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlBin)\libcurl.dll</LibCurlArchiveDllFile>
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.8.0.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.8.0.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.9.0.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.9.0.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.0.0</DUBVersion>
+    <DUBVersion>v1.1.0</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
     <!-- LDC -->
     <LDCVersion>1.1.0</LDCVersion>
-    <LDCVersionSuffix>-alpha1</LDCVersionSuffix>
+    <LDCVersionSuffix>-beta4</LDCVersionSuffix>
 
     <!-- Use the following properties to clone from local git folder
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
