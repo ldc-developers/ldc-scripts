@@ -64,7 +64,7 @@ case "$OS" in
         export USE_LIBCPP=true
         # Target OS X 10.7 (which is the minimum version we can support due to
         # TLS) even when building on newer systems.
-        export MACOSX_DEPLOYMENT_TARGET=10.7
+        export MACOSX_DEPLOYMENT_TARGET=10.8
         ;;
     mingw)
         export CMAKE_GENERATOR='-G Ninja'
