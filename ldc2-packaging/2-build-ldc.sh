@@ -87,6 +87,7 @@ if [ "$OS" == "osx" ]; then
     libfile=$(otool -L $PKG_DIR/bin/ldc2 | grep libconfig | cut -f1 -d ' ' | xargs)
     cp $libfile $PKG_DIR/bin
     install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldc2
+    install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldmd2
 elif [ "$OS" == "linux" -o "$OS" == "freebsd" -o "$OS" == "solaris" ];
 then
     if [ "$OS" == "linux" ];
