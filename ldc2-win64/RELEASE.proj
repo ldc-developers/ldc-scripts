@@ -145,6 +145,8 @@
     <Copy SourceFiles="$(LibCurlArchiveDllFile)" DestinationFolder="$(LDCInstallDir)\bin"/>
     <Copy SourceFiles="$(LibCurlArchiveLibFile)" DestinationFolder="$(LDCInstallDir)\lib"/>
     <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCInstallDir)\bin"/>
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\ldc2-packaging\pkgfiles\README.txt" DestinationFolder="$(LDCInstallDir)"/>
+    <Copy SourceFiles="$(LDCSrcDir)\LICENSE" DestinationFolder="$(LDCInstallDir)"/>
   </Target>
 
   <Target Name="LDCMultilib">
