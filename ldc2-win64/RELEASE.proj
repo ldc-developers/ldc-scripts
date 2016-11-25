@@ -67,7 +67,7 @@
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.1.0</DUBVersion>
+    <DUBVersion>v1.1.1-beta.1</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
