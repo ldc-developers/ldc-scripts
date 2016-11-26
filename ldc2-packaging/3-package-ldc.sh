@@ -2,10 +2,11 @@
 
 . env.sh
 
+# Add auxillary files.
 if [ "$OS" == "mingw" ]; then
-	cp pkgfiles/README.txt $PKG_DIR
+    cp pkgfiles/README.txt $PKG_DIR
 else
-	cp pkgfiles/README $PKG_DIR
+    cp pkgfiles/README $PKG_DIR
 fi
 
 cp $SRC_DIR/ldc/LICENSE $PKG_DIR
@@ -17,6 +18,7 @@ fi
 # Add Dub settings file to package
 cp -r pkgfiles/dub $PKG_DIR/etc
 
+# Rename pkg/ to the final name and zip it up.
 cd $BUILD_ROOT
 rm -rf $PKG_BASE
 mv $PKG_DIR $PKG_BASE
@@ -32,6 +34,7 @@ else
     xz -z -e -9 $PKG_BASE.tar
 fi
 
+# Create source archive.
 cd $SRC_DIR
 rm -f ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz
 tar czf ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz --exclude-vcs --transform=s/ldc/ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src/ ldc
