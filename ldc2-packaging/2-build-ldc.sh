@@ -38,7 +38,7 @@ extra_flags=()
 if [ "$OS" == "linux" ]; then
     # We build on Ubuntu 12.04 with a backported gcc 4.9.
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
-    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++ -Wl,-rpath,\$ORIGIN'")
+    extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++ -Wl,-rpath,\\\\\$\$ORIGIN'")
 fi
 if [ "$OS" == "solaris" ]; then
     # We build on OpenSolaris 11.2 with additional installed gcc 4.8.
