@@ -23,11 +23,5 @@ fi
 curl -H "Authorization: token ${GITHUB_API_TOKEN}" \
      -H "Accept: application/vnd.github.manifold-preview" \
      -H "Content-Type: application/octet-stream" \
-     --data-binary @$BUILD_ROOT/$PKG_BASE.tar.gz \
-     "https://uploads.github.com/repos/ldc-developers/ldc/releases/${GITHUB_RELEASE_ID}/assets?name=$PKG_BASE.tar.gz"
-
-curl -H "Authorization: token ${GITHUB_API_TOKEN}" \
-     -H "Accept: application/vnd.github.manifold-preview" \
-     -H "Content-Type: application/octet-stream" \
      --data-binary @$BUILD_ROOT/$PKG_BASE.tar.xz \
      "https://uploads.github.com/repos/ldc-developers/ldc/releases/${GITHUB_RELEASE_ID}/assets?name=$PKG_BASE.tar.xz"
