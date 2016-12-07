@@ -67,13 +67,13 @@
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.1.1-beta.1</DUBVersion>
+    <DUBVersion>v1.1.1</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
     <!-- LDC -->
     <LDCVersion>1.1.0</LDCVersion>
-    <LDCVersionSuffix>-beta4</LDCVersionSuffix>
+    <LDCVersionSuffix>-beta6</LDCVersionSuffix>
 
     <!-- Use the following properties to clone from local git folder
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>

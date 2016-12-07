@@ -117,12 +117,10 @@ EOM
 fi
 
 if [ -z "$DUB_VERSION" ]; then
-    cat <<EOM
-Set DUB_VERSION to the Dub version to build (e.g. 'v1.0.0').
-
-This will be used in the git checkout command.
-EOM
-    exit 1
+    # Will be used in the git checkout command.
+    export DUB_VERSION=v1.1.1
+    echo "Defaulting to DUB ${DUB_VERSION}."
+    echo
 fi
 
 export PKG_BASE=ldc2-$LDC_VERSION$LDC_VERSION_SUFFIX-$OS-$ARCH
