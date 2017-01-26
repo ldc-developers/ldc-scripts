@@ -99,9 +99,12 @@ case "$ARCH" in
 esac
 
 if [ -z "$LLVM_VERSION" ]; then
-    echo "Set LLVM_VERSION to the LLVM version to use, e.g. '3.8.0' (or 'release_38' or 'rev_123456' to fetch from SVN)."
-    echo "Export LLVM_USE_CMAKE=true if you want or need to use CMake to build LLVM (>= 3.9)."
-    exit 1
+    export LLVM_VERSION=3.9.1
+    export LLVM_USE_CMAKE=true
+    echo "Defaulting to LLVM v${LLVM_VERSION}."
+    echo "  Set LLVM_VERSION to the LLVM version to use, e.g. '${LLVM_VERSION}' (or 'release_38' or 'rev_123456' to fetch from SVN)."
+    echo "  Export LLVM_USE_CMAKE=true if you want or need to use CMake to build LLVM (>= 3.9)."
+    echo
 fi
 
 if [ -z "$LDC_VERSION" ]; then
@@ -118,8 +121,9 @@ fi
 
 if [ -z "$DUB_VERSION" ]; then
     # Will be used in the git checkout command.
-    export DUB_VERSION=v1.1.1
+    export DUB_VERSION=v1.2.0
     echo "Defaulting to DUB ${DUB_VERSION}."
+    echo "  Set DUB_VERSION to the DUB version to use, e.g. '${DUB_VERSION}'."
     echo
 fi
 

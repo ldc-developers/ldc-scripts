@@ -60,14 +60,14 @@
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.9.0.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.9.0.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-3.9.1.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-3.9.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.1.1</DUBVersion>
+    <DUBVersion>v1.2.0</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
