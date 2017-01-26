@@ -30,10 +30,6 @@ else
 fi
 git checkout release-$LDC_VERSION && git submodule update
 
-rm -rf $WORK_DIR/ldc
-mkdir -p $WORK_DIR/ldc
-cd $WORK_DIR/ldc
-
 extra_flags=()
 if [ "$OS" == "linux" ]; then
     # We build on Ubuntu 12.04 with a backported gcc 4.9.
@@ -61,13 +57,31 @@ if [ -n "$USE_LIBCPP" ]; then
         extra_flags+=("-DCMAKE_CXX_FLAGS='-stdlib=libc++'" "-DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'")
     fi
 fi
+
+# Build bootstrap LDC.
+
+rm -rf $WORK_DIR/ldc-bootstrap
+mkdir -p $WORK_DIR/ldc-bootstrap
+cd $WORK_DIR/ldc-bootstrap
+
+cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR "${extra_flags[@]}"
+$MAKE
+
+# Rebuild LDC with bootstrap compiler.
+
 if [ -n "$MULTILIB" ]; then
     extra_flags+=("-DMULTILIB=ON")
 fi
 
-cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_INSTALL_PREFIX=$PKG_DIR \
-    -DCMAKE_BUILD_TYPE=Release -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR \
-    -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import "${extra_flags[@]}"
+rm -rf $WORK_DIR/ldc
+mkdir -p $WORK_DIR/ldc
+cd $WORK_DIR/ldc
+
+cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_BUILD_TYPE=Release \
+    -DD_COMPILER=$WORK_DIR/ldc-bootstrap/bin/ldmd2 \
+    -DCMAKE_INSTALL_PREFIX=$PKG_DIR -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import \
+    -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR "${extra_flags[@]}"
 rm -rf $PKG_DIR
 $MAKE install
 
