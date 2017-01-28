@@ -24,7 +24,7 @@ elif [[ $LLVM_VERSION == rev_* ]]; then
     svn checkout http://llvm.org/svn/llvm-project/llvm/trunk@$LLVM_REV llvm
 else
     rm -f llvm-$LLVM_VERSION.src.tar.gz llvm-$LLVM_VERSION.src.tar.xz
-    curl --fail -O "http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.{gz,xz}"
+    curl --fail -O "http://releases.llvm.org/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.{gz,xz}"
     if [ -e llvm-$LLVM_VERSION.src.tar.gz ]; then
         $TAR xzf llvm-$LLVM_VERSION.src.tar.gz
     else
