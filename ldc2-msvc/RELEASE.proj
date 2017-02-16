@@ -54,8 +54,8 @@
     <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
 
     <!-- LibCurl -->
-    <LibCurlArchiveFile>C:\Software\curl\libcurl-7.51.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
-    <LibCurlArchiveDir>$(InstallDir)\libcurl-7.51.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
+    <LibCurlArchiveFile>C:\Software\curl\libcurl-7.48.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
+    <LibCurlArchiveDir>$(InstallDir)\libcurl-7.48.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
     <LibCurlArchiveDllFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlBin)\libcurl.dll</LibCurlArchiveDllFile>
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
 
@@ -72,8 +72,8 @@
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
     <!-- LDC -->
-    <LDCVersion>1.1.0</LDCVersion>
-    <LDCVersionSuffix>-beta6</LDCVersionSuffix>
+    <LDCVersion>1.2.0</LDCVersion>
+    <LDCVersionSuffix>-beta1</LDCVersionSuffix>
 
     <!-- Use the following properties to clone from local git folder
     <LDCGitSource>C:/OpenSource/ldc/ldc</LDCGitSource>
