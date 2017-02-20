@@ -7,8 +7,9 @@ cd $SRC_DIR
 
 rm -rf ldc
 if [ -z $LDC_SOURCE ]; then
-    git clone --recursive https://github.com/ldc-developers/ldc.git
+    git clone -b v$LDC_VERSION$LDC_VERSION_SUFFIX --single-branch --depth 1 --recursive https://github.com/ldc-developers/ldc.git ldc
     cd ldc
+    git submodule update
 elif [ -d $LDC_SOURCE -a -d $LDC_SOURCE/.git ]; then
     git clone $LDC_SOURCE ldc
     cd ldc
@@ -24,11 +25,11 @@ elif [ -d $LDC_SOURCE -a -d $LDC_SOURCE/.git ]; then
 	url = $LDC_SOURCE/tests/d2/dmd-testsuite
 EOF
     git submodule init
+    git checkout v$LDC_VERSION$LDC_VERSION_SUFFIX && git submodule update
 else
     echo "Environment variable LDC_SOURCE does not point to git folder"
     exit 1
 fi
-git checkout release-$LDC_VERSION && git submodule update
 
 extra_flags=()
 if [ "$OS" == "linux" ]; then
