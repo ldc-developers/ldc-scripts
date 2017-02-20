@@ -128,7 +128,7 @@
   <Target Name="LDC">
     <RemoveDir Directories="@(LDCDirectories)" />
     <MakeDir Directories="@(LDCDirectories)"/>
-    <Exec Command="&quot;$(GitExe)&quot; clone --branch release-$(LDCVersion) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
+    <Exec Command="&quot;$(GitExe)&quot; clone --branch v$(LDCVersion)$(LDCVersionSuffix) --single-branch $(LDCGitSource) ldc" WorkingDirectory="$(LDCSrcDir)\.."/>
     <CallTarget Targets="LDCGitModules"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule init" WorkingDirectory="$(LDCSrcDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
