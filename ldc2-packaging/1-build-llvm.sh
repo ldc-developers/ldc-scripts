@@ -60,7 +60,8 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
     esac
 
     cmake $CMAKE_GENERATOR $SRC_DIR/llvm/ -DLLVM_TARGETS_TO_BUILD=$LLVM_TARGET \
-        -DCMAKE_INSTALL_PREFIX=$INTERMEDIATE_DIR -DCMAKE_BUILD_TYPE=Release $extra_flags
+        -DCMAKE_INSTALL_PREFIX=$INTERMEDIATE_DIR -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_ENABLE_LTO=$BUILD_WITH_LTO $extra_flags
 else
     extra_flags=
     if [ -n "$USE_LIBCPP" ]; then

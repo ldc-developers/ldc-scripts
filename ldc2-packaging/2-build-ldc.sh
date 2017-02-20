@@ -81,6 +81,7 @@ cd $WORK_DIR/ldc
 
 cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_BUILD_TYPE=Release \
     -DD_COMPILER=$WORK_DIR/ldc-bootstrap/bin/ldmd2 \
+    -DLDC_BUILD_WITH_LTO=$BUILD_WITH_LTO \
     -DCMAKE_INSTALL_PREFIX=$PKG_DIR -DINCLUDE_INSTALL_DIR=$BUILD_ROOT/pkg/import \
     -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR "${extra_flags[@]}"
 rm -rf $PKG_DIR

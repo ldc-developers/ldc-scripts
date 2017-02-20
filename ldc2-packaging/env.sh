@@ -120,6 +120,17 @@ EOM
     exit 1
 fi
 
+if [ -z "$BUILD_WITH_LTO" ]; then
+    export BUILD_WITH_LTO=off
+    if [ "$OS" == "osx" ]; then
+        export BUILD_WITH_LTO=thin
+    fi
+    echo "Defaulting to BUILD_WITH_LTO=${BUILD_WITH_LTO}."
+    echo "  Set BUILD_WITH_LTO to {off|on|full|thin} to override this default setting."
+    echo "  BUILD_WITH_LTO is used when building both LLVM and LDC."
+    echo
+fi
+
 if [ -z "$DUB_VERSION" ]; then
     # Will be used in the git checkout command.
     export DUB_VERSION=v1.2.0
