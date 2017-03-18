@@ -29,12 +29,12 @@ if [ "$OS" == "mingw" ]; then
     7z a -t7z $PKG_BASE.7z $PKG_BASE -mx9
 else
     rm -f $PKG_BASE.tar.gz $PKG_BASE.tar.xz
-    tar czvf $PKG_BASE.tar.gz $PKG_BASE
-    tar cvf $PKG_BASE.tar $PKG_BASE
+    $TAR czvf $PKG_BASE.tar.gz $PKG_BASE
+    $TAR cvf $PKG_BASE.tar $PKG_BASE
     xz -z -e -9 $PKG_BASE.tar
 fi
 
 # Create source archive.
 cd $SRC_DIR
 rm -f ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz
-tar czf ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz --exclude-vcs --transform=s/ldc/ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src/ ldc
+$TAR czf ../ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src.tar.gz --exclude-vcs --transform=s/ldc/ldc-$LDC_VERSION$LDC_VERSION_SUFFIX-src/ ldc

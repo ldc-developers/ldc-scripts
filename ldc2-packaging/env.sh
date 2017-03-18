@@ -57,7 +57,8 @@ case "$OS" in
     osx)
         export CMAKE_GENERATOR=
         export MAKE=make
-        export TAR=tar
+        # OS X's own tar is old and does not support --exclude-vcs
+        export TAR=gnutar
         # On OS X, force Clang to use the libc++ standard library. LLVM 3.5
         # refuses to be built on OS X 10.8.5 otherwise (with Xcode 5.1.1 being
         # the last supported version there), as libstdc++.so.6 is too old.
