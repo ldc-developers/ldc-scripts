@@ -106,6 +106,9 @@ if [ "$OS" == "osx" ]; then
     install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldmd2
 elif [ "$OS" == "linux" -o "$OS" == "freebsd" -o "$OS" == "solaris" ];
 then
+    # libconfig is not used starting with 1.2.2
     libfile=$(ldd $PKG_DIR/bin/ldc2 | grep libconfig | cut -d ' ' -f 3)
-    cp -aL $libfile $PKG_DIR/bin
+    if [ -n "$libfile" ]; then
+        cp -aL $libfile $PKG_DIR/bin
+    fi
 fi
