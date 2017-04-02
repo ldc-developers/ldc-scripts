@@ -50,8 +50,8 @@ fi
 
 case "$OS" in
     linux)
-        export CMAKE_GENERATOR=
-        export MAKE=make
+        export CMAKE_GENERATOR='-G Ninja'
+        export MAKE=ninja
         export TAR=tar
         ;;
     osx)
