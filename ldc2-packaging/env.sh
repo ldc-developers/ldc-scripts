@@ -126,7 +126,7 @@ if [ -z "$BUILD_WITH_LTO" ]; then
         export BUILD_WITH_LTO=thin
     fi
     echo "Defaulting to BUILD_WITH_LTO=${BUILD_WITH_LTO}."
-    echo "  Set BUILD_WITH_LTO to {off|on|full|thin} to override this default setting."
+    echo "  Set BUILD_WITH_LTO to {off|full|thin} to override this default setting."
     echo "  BUILD_WITH_LTO is used when building both LLVM and LDC."
     echo
 fi
