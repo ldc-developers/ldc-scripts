@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. env-ldc.sh
+
 if [ -z "$GITHUB_API_TOKEN" ]; then
     echo "Set GITHUB_API_TOKEN to a GitHub OAuth token authorized to access ldc-developers/ldc."
     exit 1

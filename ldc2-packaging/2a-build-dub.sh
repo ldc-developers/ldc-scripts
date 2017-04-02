@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. env.sh
+. env-ldc.sh
 
 mkdir -p $SRC_DIR
 cd $SRC_DIR

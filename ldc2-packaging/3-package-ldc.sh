@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. env.sh
+. env-ldc.sh
 
 # Add auxillary files.
 if [ "$OS" == "mingw" ]; then
