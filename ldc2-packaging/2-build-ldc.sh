@@ -7,9 +7,9 @@ cd $SRC_DIR
 
 rm -rf ldc
 if [ -z $LDC_SOURCE ]; then
-    git clone -b v$LDC_VERSION$LDC_VERSION_SUFFIX --depth 1 --recursive https://github.com/ldc-developers/ldc.git ldc
+    git clone --recursive https://github.com/ldc-developers/ldc.git ldc
     cd ldc
-    git submodule update
+    git checkout v$LDC_VERSION$LDC_VERSION_SUFFIX && git submodule update
 elif [ -d $LDC_SOURCE -a -d $LDC_SOURCE/.git ]; then
     git clone $LDC_SOURCE ldc
     cd ldc
