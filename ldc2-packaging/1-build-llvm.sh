@@ -75,3 +75,6 @@ else
 fi
 
 $MAKE install
+
+# Clean up build area for smaller Docker image.
+rm -rf $WORK_DIR/llvm
