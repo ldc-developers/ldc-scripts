@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . env.sh
+set -x
 
 mkdir -p $SRC_DIR
 cd $SRC_DIR

@@ -33,4 +33,6 @@ if [ -z "$DUB_VERSION" ]; then
     echo
 fi
 
+set -x
+
 export PKG_BASE=ldc2-$LDC_VERSION$LDC_VERSION_SUFFIX-$OS-$ARCH

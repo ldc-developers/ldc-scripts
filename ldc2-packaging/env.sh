@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eo pipefail
+
 if [ -z "$BUILD_ROOT" ]; then
     cat <<EOM
 Set BUILD_ROOT to the working directory for packaging.
@@ -107,5 +109,3 @@ if [ -z "$LLVM_VERSION" ]; then
     echo "  Export LLVM_USE_CMAKE=true if you want or need to use CMake to build LLVM (>= 3.9)."
     echo
 fi
-
-set -ex
