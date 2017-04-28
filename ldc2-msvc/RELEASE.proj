@@ -103,7 +103,7 @@
     <RemoveDir Directories="@(LLVMDirectories)" />
     <MakeDir Directories="@(LLVMDirectories)"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LLVMSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o. &gt; nul" WorkingDirectory="$(LLVMSrcDir)\.."/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LLVMSrcDir)&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LLVMInstallDir)&quot; -DPYTHON_EXECUTABLE=&quot;$(PythonExe)&quot; -DLLVM_TARGETS_TO_BUILD=&quot;$(LLVMTargetsToBuild)&quot; -DLLVM_USE_CRT_$(CMakeBuildType)=MT -DLLVM_APPEND_VC_REV=ON -DLLVM_ENABLE_ZLIB=OFF" WorkingDirectory="$(LLVMWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LLVMWrkDir)"/>
   </Target>
 
