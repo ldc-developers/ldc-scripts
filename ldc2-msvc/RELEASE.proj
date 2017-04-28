@@ -47,12 +47,6 @@
     <!-- Python executable -->
     <PythonExe>C:/Program Files/Python/Python35/python.exe</PythonExe>
 
-    <!-- LibConfig -->
-    <LibConfigSrcFile>C:\Software\LibConfig\libconfig-1.4.9.tar.gz</LibConfigSrcFile>
-    <LibConfigSrcDir>$(SrcDir)\libconfig-1.4.9</LibConfigSrcDir>
-    <LibConfigWrkDir>$(WrkDir)\libconfig</LibConfigWrkDir>
-    <LibConfigInstallDir>$(InstallDir)\libconfig</LibConfigInstallDir>
-
     <!-- LibCurl -->
     <LibCurlArchiveFile>C:\Software\curl\libcurl-7.48.0-WinSSL-zlib-x86-x64.zip</LibCurlArchiveFile>
     <LibCurlArchiveDir>$(InstallDir)\libcurl-7.48.0-WinSSL-zlib-x86-x64</LibCurlArchiveDir>
@@ -93,23 +87,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <LibConfigDirectories Include="$(LibConfigSrcDir);$(LibConfigWrkDir);$(LibConfigInstallDir)"/>
     <LibCurlDirectories Include="$(LibCurlArchiveDir)"/>
     <LLVMDirectories Include="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
     <DUBDirectories Include="$(DUBSrcDir)"/>
     <LDCDirectories Include="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
   </ItemGroup>
-
-  <Target Name="LibConfig">
-    <RemoveDir Directories="@(LibConfigDirectories)" />
-    <MakeDir Directories="$(LibConfigSrcDir);$(LibConfigWrkDir)"/>
-    <Exec Command="&quot;$(SevenZipExe)&quot; x &quot;$(LibConfigSrcFile)&quot; -so | &quot;$(SevenZipExe)&quot; x -aoa -si -ttar -o. &gt; nul" WorkingDirectory="$(LibConfigSrcDir)\.."/>
-    <Move SourceFiles="$(LibConfigSrcDir)\lib\libconfig.h" DestinationFiles="$(LibConfigSrcDir)\lib\libconfig.h.in" />
-    <ReplaceFileText InputFilename="$(LibConfigSrcDir)\lib\libconfig.h.in" OutputFilename="$(LibConfigSrcDir)\lib\libconfig.h" MatchExpression="LIBCONFIG_EXPORTS" ReplacementText="LIBCONFIG_EXPORT"/>
-    <CallTarget Targets="LibConfigCMakeLists"/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LibConfigSrcDir)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
-    <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LibConfigWrkDir)"/>
-  </Target>
 
   <Target Name="LibCurl">
     <RemoveDir Directories="@(LibCurlArchiveDir)" />
@@ -134,17 +116,14 @@
     <Exec Command="&quot;$(GitExe)&quot; submodule update" WorkingDirectory="$(LDCSrcDir)"/>
     <!-- build bootstrap LDC using automatically detected D compiler -->
     <MakeDir Directories="$(LDCWrkDir)\bootstrap"/>
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig.lib&quot;" WorkingDirectory="$(LDCWrkDir)\bootstrap"/>
-    <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCWrkDir)\bootstrap\bin"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot;" WorkingDirectory="$(LDCWrkDir)\bootstrap"/>
     <Exec Command="&quot;$(NinjaExe)&quot;" WorkingDirectory="$(LDCWrkDir)\bootstrap"/>
     <!-- rebuild LDC with bootstrap compiler -->
-    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DLIBCONFIG_INCLUDE_DIR=&quot;$(LibConfigSrcDir.Replace('\','/'))/lib&quot; -DLIBCONFIG_LIBRARY=&quot;$(LibConfigWrkDir.Replace('\','/'))/libconfig.lib&quot; -DD_COMPILER=&quot;$(LDCWrkDir)\bootstrap\bin\ldmd2.exe&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DINCLUDE_INSTALL_DIR=&quot;$(LDCInstallDir.Replace('\','/'))/import&quot;" WorkingDirectory="$(LDCWrkDir)"/>
-    <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCWrkDir)\bin"/>
+    <Exec Command="&quot;$(CMakeExe)&quot; -G Ninja -DCMAKE_BUILD_TYPE=$(CMakeBuildType) &quot;$(LDCSrcDir)&quot; -DLLVM_ROOT_DIR=&quot;$(LLVMInstallDir.Replace('\','/'))&quot; -DD_COMPILER=&quot;$(LDCWrkDir)\bootstrap\bin\ldmd2.exe&quot; -DCMAKE_INSTALL_PREFIX=&quot;$(LDCInstallDir.Replace('\','/'))&quot; -DINCLUDE_INSTALL_DIR=&quot;$(LDCInstallDir.Replace('\','/'))/import&quot;" WorkingDirectory="$(LDCWrkDir)"/>
     <Exec Command="&quot;$(NinjaExe)&quot; install" WorkingDirectory="$(LDCWrkDir)"/>
     <ReplaceFileText InputFilename="$(LDCInstallDir)\etc\ldc2.conf" OutputFilename="$(LDCInstallDir)\etc\ldc2.conf" MatchExpression="(?i)$(LDCInstallDir.Replace('\','/'))" ReplacementText="%%ldcbinarypath%%/.."/>
     <Copy SourceFiles="$(LibCurlArchiveDllFile)" DestinationFolder="$(LDCInstallDir)\bin"/>
     <Copy SourceFiles="$(LibCurlArchiveLibFile)" DestinationFolder="$(LDCInstallDir)\lib"/>
-    <Copy SourceFiles="$(LibConfigWrkDir)\libconfig.dll" DestinationFolder="$(LDCInstallDir)\bin"/>
     <Copy SourceFiles="$(MSBuildThisFileDirectory)..\ldc2-packaging\pkgfiles\README.txt" DestinationFolder="$(LDCInstallDir)"/>
     <Copy SourceFiles="$(LDCSrcDir)\LICENSE" DestinationFolder="$(LDCInstallDir)"/>
   </Target>
@@ -184,7 +163,7 @@
   </Target>
 
   <Target Name="All">
-    <CallTarget Targets="LibConfig;LLVM;LibCurl;LDC;DUB"/>
+    <CallTarget Targets="LLVM;LibCurl;LDC;DUB"/>
     <CallTarget Targets="LDCMultilib" Condition="'$(Platform)' == 'X64'"/>
     <CallTarget Targets="ZIP"/>
   </Target>
@@ -205,65 +184,6 @@
       </Line1>
     </ItemGroup>
     <WriteLinesToFile File="$(LDCSrcDir)\.gitmodules" Lines="@(Line1->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
-  </Target>
-
-  <Target Name="LibConfigCMakeLists">
-    <ItemGroup>
-      <Line2 Include="line01"><Text><![CDATA[
-# CMake build file for libconfig
-
-cmake_minimum_required(VERSION 2.8)
-project(libconfig)
-
-set(LIBCONFIG_SOURCE_DIR ${PROJECT_SOURCE_DIR}/lib)
-set(LIBCONFIG__BINARY_DIR ${PROJECT_BINARY_DIR})
-
-set(LIBCONFIG_SOURCES
-    ${LIBCONFIG_SOURCE_DIR}/grammar.c
-    ${LIBCONFIG_SOURCE_DIR}/libconfig.c
-    ${LIBCONFIG_SOURCE_DIR}/scanctx.c
-    ${LIBCONFIG_SOURCE_DIR}/scanner.c
-    ${LIBCONFIG_SOURCE_DIR}/strbuf.c
-    )
-
-include_directories(${LIBCONFIG_SOURCE_DIR})
-
-if (MSVC)
-  add_definitions(
-      /DYY_NO_UNISTD_H
-      /DYY_USE_CONST
-      /DWIN32
-      /Zc:wchar_t /GR- /Gd
-      /D_CRT_SECURE_NO_WARNINGS
-      /wd4290
-  )
-endif (MSVC)
-
-foreach(file ${LIBCONFIG++_SOURCES})
-    if(file MATCHES ".*\\.c$")
-        set_source_files_properties(${file} PROPERTIES
-            LANGUAGE C
-            COMPILE_FLAGS /EHsc
-        )
-    else()
-        set_source_files_properties(${file} PROPERTIES
-            LANGUAGE CXX
-        )
-    endif()
-endforeach()
-
-add_library(libconfig SHARED ${LIBCONFIG_SOURCES})
-
-set_target_properties(
-    libconfig PROPERTIES
-    ARCHIVE_OUTPUT_NAME libconfig
-    LIBRARY_OUTPUT_NAME libconfig
-    RUNTIME_OUTPUT_NAME libconfig
-)
-      ]]></Text>
-      </Line2>
-    </ItemGroup>
-    <WriteLinesToFile File="$(LibConfigSrcDir)\CMakeLists.txt" Lines="@(Line2->'%(Text)')" Overwrite="true" Encoding="utf-8"/>
   </Target>
 
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
