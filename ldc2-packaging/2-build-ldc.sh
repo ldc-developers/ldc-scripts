@@ -42,13 +42,6 @@ if [ "$OS" == "solaris" ]; then
     # Therefore we must specify --static-libstdc++ to avoid dynamic link errors
     extra_flags+=("-DCMAKE_EXE_LINKER_FLAGS='-static-libstdc++'")
 fi
-if [ "$OS" == "mingw" ]; then
-    # Tailored to the setup described in
-    # http://wiki.dlang.org/Building_LDC_on_MinGW_x86.
-    # We should add support for starting from a clean MinGW/MSYS installation.
-    extra_flags+=("-DLIBCONFIG_INCLUDE_DIR=/local/include")
-    extra_flags+=("-DLIBCONFIG_LIBRARY=/local/lib/libconfig.dll.a")
-fi
 if [ -n "$USE_LIBCPP" ]; then
     # If LLVM was built against libc++, we need to do the same with LDC to be
     # able to link against it.
@@ -98,17 +91,3 @@ perl -pi -e s?$pkg_replace_dir/?%%ldcbinarypath%%/../?g $PKG_DIR/etc/ldc2.conf
 # Perl on MinGW/MSYS creates a backup file despite -i being specified without
 # an argument.
 rm -f $PKG_DIR/etc/ldc2.conf.bak
-
-if [ "$OS" == "osx" ]; then
-    libfile=$(otool -L $PKG_DIR/bin/ldc2 | grep libconfig | cut -f1 -d ' ' | xargs)
-    cp $libfile $PKG_DIR/bin
-    install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldc2
-    install_name_tool -change $libfile @executable_path/$(basename $libfile) $PKG_DIR/bin/ldmd2
-elif [ "$OS" == "linux" -o "$OS" == "freebsd" -o "$OS" == "solaris" ];
-then
-    # libconfig is not used starting with 1.2.2
-    libfile=$(ldd $PKG_DIR/bin/ldc2 | grep libconfig | cut -d ' ' -f 3)
-    if [ -n "$libfile" ]; then
-        cp -aL $libfile $PKG_DIR/bin
-    fi
-fi
