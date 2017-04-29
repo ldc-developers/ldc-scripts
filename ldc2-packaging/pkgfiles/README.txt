@@ -3,22 +3,21 @@ the LLVM-based D compiler.
 
 No installation is required, simply use the executables in
 the bin\ subfolder.
-Just make sure you have a Microsoft Visual C++ 2015
-installation, either via Visual Studio 2015 or via the
-stand-alone Visual C++ Build Tools, both freely available
-from Microsoft. The runtime is needed for the LDC binaries
-themselves, and LDC relies on the MS linker and the MSVCRT
-+ WinSDK libs.
+Just make sure you have a Microsoft Visual C++ 2015 or 2017
+installation, either via Visual Studio or via the stand-
+alone Visual C++ Build Tools, both freely available from
+Microsoft. LDC relies on the MS linker and MSVCRT + WinSDK
+libs.
 
 The compiler configuration file is etc\ldc2.conf, and by
 default only import\ resp. import\ldc\ are on the module
 search path.
 
 The LDC package is portable and should be able to detect
-your Visual C++ installation automatically. By setting the
-LDC_VSDIR environment variable to your VS/VC folder, you
-can instruct LDC to detect a specific Visual C++
-installation.
+your (latest) Visual C++ installation automatically.
+By setting the LDC_VSDIR environment variable to an
+existing Visual Studio directory, you can instruct LDC to
+use a specific Visual C++ installation.
 
 NOTE: Running LDC inside a 'VS Tools Command Prompt' is
       deprecated.
@@ -26,7 +25,8 @@ NOTE: Running LDC inside a 'VS Tools Command Prompt' is
 The Visual C++ detection is skipped when running LDC in a
 'VS Native/Cross Tools Command Prompt' (i.e., if the
 environment variable VSINSTALLDIR is set). Linking will
-thus be restricted to the selected target.
+thus be restricted to the selected target (=> no cross-
+linking support via '-m32' etc.).
 
 DUB
 
