@@ -41,6 +41,7 @@ docker run \
 	sh -c "cd /ldc2-packaging && \
 	./2-build-ldc.sh && \
 	./2a-build-dub.sh && \
+	./2b-build-tools.sh && \
 	./3-package-ldc.sh"
 
 print_step "Copying over release archives"
