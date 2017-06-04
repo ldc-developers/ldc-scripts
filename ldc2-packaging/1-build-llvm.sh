@@ -55,12 +55,12 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
     if [ "$OS" == "solaris" ]; then
         extra_flags="$extra_flags -DPYTHON_EXECUTABLE=/usr/bin/python3.4"
     fi
-    # Map Arch to correct LLVM target name (notably x86_64 is not recognized by LLVM)
+    # Choose set of enabled LLVM targets based on host architecture
     case "$ARCH" in
-        aarch64) LLVM_TARGET="AArch64" ;;
+        aarch64) LLVM_TARGET="ARM" ;;
         arm) LLVM_TARGET="ARM" ;;
         x86) LLVM_TARGET="X86" ;;
-        x86_64) LLVM_TARGET="X86" ;;
+        x86_64) LLVM_TARGET="X86;ARM;PowerPC" ;;
     esac
 
     cmake $CMAKE_GENERATOR $SRC_DIR/llvm/ -DLLVM_TARGETS_TO_BUILD=$LLVM_TARGET \

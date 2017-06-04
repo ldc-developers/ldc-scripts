@@ -59,7 +59,7 @@
     <LLVMSrcDir>$(SrcDir)\llvm-3.9.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
-    <LLVMTargetsToBuild>X86;ARM;PowerPC;Mips;Sparc</LLVMTargetsToBuild>
+    <LLVMTargetsToBuild>X86;ARM;PowerPC</LLVMTargetsToBuild>
 
     <!-- DUB -->
     <DUBVersion>v1.3.0</DUBVersion>
