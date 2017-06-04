@@ -5,6 +5,7 @@ set -x
 
 mkdir -p $SRC_DIR
 cd $SRC_DIR
+rm -rf llvm
 
 if [[ $LLVM_VERSION == /* ]]; then
     if [ "${LLVM_VERSION##*.}" == "gz" ]; then
@@ -13,29 +14,24 @@ if [[ $LLVM_VERSION == /* ]]; then
         $TAR xJf $LLVM_VERSION
     fi
     base=$(basename $LLVM_VERSION)
-
-    rm -rf llvm
     mv "${base%.*.*}" llvm
 elif [[ $LLVM_VERSION == release_* ]]; then
-    rm -rf llvm
     svn checkout http://llvm.org/svn/llvm-project/llvm/branches/$LLVM_VERSION llvm
     svn checkout http://llvm.org/svn/llvm-project/lld/branches/$LLVM_VERSION llvm/tools/lld
 elif [[ $LLVM_VERSION == rev_* ]]; then
     LLVM_REV=${LLVM_VERSION:4}
-    rm -rf llvm
     svn checkout http://llvm.org/svn/llvm-project/llvm/trunk@$LLVM_REV llvm
     svn checkout http://llvm.org/svn/llvm-project/lld/trunk@$LLVM_REV llvm/tools/lld
 else
     rm -f llvm-$LLVM_VERSION.src.tar.xz
-    curl --fail -O "http://releases.llvm.org/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz"
+    curl -OL "http://releases.llvm.org/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz"
     $TAR xJf llvm-$LLVM_VERSION.src.tar.xz
     rm -f llvm-$LLVM_VERSION.src.tar.xz
-    rm -rf llvm
     mv llvm-$LLVM_VERSION.src llvm
 
     cd llvm/tools
     rm -f lld-$LLVM_VERSION.src.tar.xz
-    curl --fail -O "http://releases.llvm.org/$LLVM_VERSION/lld-$LLVM_VERSION.src.tar.xz"
+    curl -OL "http://releases.llvm.org/$LLVM_VERSION/lld-$LLVM_VERSION.src.tar.xz"
     $TAR xJf lld-$LLVM_VERSION.src.tar.xz
     rm -f lld-$LLVM_VERSION.src.tar.xz
     rm -rf lld
