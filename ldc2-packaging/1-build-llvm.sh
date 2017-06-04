@@ -57,10 +57,10 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
     fi
     # Choose set of enabled LLVM targets based on host architecture
     case "$ARCH" in
-        aarch64) LLVM_TARGET="ARM" ;;
+        aarch64) LLVM_TARGET="AArch64" ;;
         arm) LLVM_TARGET="ARM" ;;
         x86) LLVM_TARGET="X86" ;;
-        x86_64) LLVM_TARGET="X86;ARM;PowerPC" ;;
+        x86_64) LLVM_TARGET="X86;AArch64;ARM;PowerPC" ;;
     esac
 
     cmake $CMAKE_GENERATOR $SRC_DIR/llvm/ -DLLVM_TARGETS_TO_BUILD=$LLVM_TARGET \
