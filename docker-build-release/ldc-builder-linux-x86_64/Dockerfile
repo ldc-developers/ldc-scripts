@@ -48,8 +48,8 @@ ENV LLVM_VERSION=4.0.0 LLVM_USE_CMAKE=1
 RUN ./1-build-llvm.sh && rm -rf ${BUILD_ROOT}/src
 
 # Install a host D compiler.
-ENV HOST_LDC=ldc2-1.1.0-linux-x86_64
-RUN curl -OL https://github.com/ldc-developers/ldc/releases/download/v1.1.0/${HOST_LDC}.tar.xz && \
+ENV HOST_LDC=ldc2-1.2.0-linux-x86_64
+RUN curl -OL https://github.com/ldc-developers/ldc/releases/download/v1.2.0/${HOST_LDC}.tar.xz && \
 	tar xf ${HOST_LDC}.tar.xz -C tools && \
 	rm ${HOST_LDC}.tar.xz
 ENV PATH=${PATH}:${BUILD_ROOT}/tools/${HOST_LDC}/bin
