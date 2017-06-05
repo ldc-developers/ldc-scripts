@@ -90,7 +90,6 @@
   <ItemGroup>
     <LibCurlDirectories Include="$(LibCurlArchiveDir)"/>
     <LLVMDirectories Include="$(LLVMSrcDir);$(LLVMWrkDir);$(LLVMInstallDir)"/>
-    <DUBDirectories Include="$(DUBSrcDir)"/>
     <LDCDirectories Include="$(LDCSrcDir);$(LDCWrkDir);$(LDCInstallDir)"/>
   </ItemGroup>
 
@@ -155,13 +154,23 @@
   </Target>
 
   <Target Name="DUB">
-    <RemoveDir Directories="@(DUBDirectories)" />
-    <MakeDir Directories="@(DUBDirectories)"/>
+    <RemoveDir Directories="$(DUBSrcDir)" />
+    <MakeDir Directories="$(DUBSrcDir)"/>
     <Exec Command="&quot;$(GitExe)&quot; clone $(DUBGitSource) dub" WorkingDirectory="$(DUBSrcDir)\.."/>
     <Exec Command="&quot;$(GitExe)&quot; checkout $(DUBVersion)" WorkingDirectory="$(DUBSrcDir)"/>
     <ReplaceFileText InputFilename="$(DUBSrcDir)\build.cmd" OutputFilename="$(DUBSrcDir)\build.cmd" MatchExpression="curl.lib" ReplacementText="&quot;$(LDCInstallDir)\lib\curl.lib&quot;"/>
     <Exec Command="(set DC=&quot;$(LDCInstallDir)\bin\ldmd2&quot;) &amp; &quot;$(DUBSrcDir)\build.cmd&quot;" WorkingDirectory="$(DUBSrcDir)"/>
     <Copy SourceFiles="$(DUBSrcDir)\bin\dub.exe" DestinationFolder="$(LDCInstallDir)\bin"/>
+  </Target>
+
+  <Target Name="Tools">
+    <RemoveDir Directories="$(SrcDir)\tools" />
+    <Exec Command="&quot;$(GitExe)&quot; clone --recursive https://github.com/dlang/tools.git" WorkingDirectory="$(SrcDir)"/>
+    <Exec Command="&quot;$(GitExe)&quot; checkout stable" WorkingDirectory="$(SrcDir)\tools"/>
+    <Exec Command="&quot;$(LDCInstallDir)\bin\ldmd2&quot; -w rdmd.d" WorkingDirectory="$(SrcDir)\tools"/>
+    <Exec Command="&quot;$(LDCInstallDir)\bin\ldmd2&quot; -w ddemangle.d" WorkingDirectory="$(SrcDir)\tools"/>
+    <Exec Command="&quot;$(LDCInstallDir)\bin\ldmd2&quot; -w DustMite\dustmite.d DustMite\splitter.d" WorkingDirectory="$(SrcDir)\tools"/>
+    <Copy SourceFiles="$(SrcDir)\tools\rdmd.exe;$(SrcDir)\tools\ddemangle.exe;$(SrcDir)\tools\dustmite.exe" DestinationFolder="$(LDCInstallDir)\bin"/>
   </Target>
 
   <Target Name="ZIP">
@@ -170,7 +179,7 @@
   </Target>
 
   <Target Name="All">
-    <CallTarget Targets="LLVM;LibCurl;LDC;DUB"/>
+    <CallTarget Targets="LLVM;LibCurl;LDC;DUB;Tools"/>
     <CallTarget Targets="LDCMultilib" Condition="'$(Platform)' == 'X64'"/>
     <CallTarget Targets="ZIP"/>
   </Target>
