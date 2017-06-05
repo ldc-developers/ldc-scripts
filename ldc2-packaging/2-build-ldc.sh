@@ -59,6 +59,7 @@ mkdir -p $WORK_DIR/ldc-bootstrap
 cd $WORK_DIR/ldc-bootstrap
 
 cmake $CMAKE_GENERATOR $SRC_DIR/ldc -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
     -DLLVM_ROOT_DIR=$INTERMEDIATE_DIR "${extra_flags[@]}"
 $MAKE
 
