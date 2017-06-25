@@ -12,8 +12,6 @@ git checkout stable
 
 PATH=$PKG_DIR/bin:$PATH
 
-sed -i "s|^DMD = .*$|DMD = $WORK_DIR/ldc/bin/ldmd2|" posix.mak
-sed -i "s|^INSTALL_DIR = .*$|INSTALL_DIR = $PWD|" posix.mak
-make -f posix.mak install
+make -f posix.mak install DMD=$WORK_DIR/ldc/bin/ldmd2 INSTALL_DIR=$PWD
 
 cp bin/rdmd bin/ddemangle bin/dustmite $PKG_DIR/bin
