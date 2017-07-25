@@ -62,7 +62,7 @@
     <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.3.0</DUBVersion>
+    <DUBVersion>v1.4.0</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 

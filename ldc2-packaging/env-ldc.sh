@@ -16,7 +16,7 @@ fi
 
 if [ -z "$DUB_VERSION" ]; then
     # Will be used in the git checkout command.
-    export DUB_VERSION=v1.3.0
+    export DUB_VERSION=v1.4.0
     echo "Defaulting to DUB ${DUB_VERSION}."
     echo "  Set DUB_VERSION to the DUB version to use, e.g. '${DUB_VERSION}'."
     echo
