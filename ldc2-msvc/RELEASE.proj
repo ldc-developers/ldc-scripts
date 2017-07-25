@@ -54,9 +54,9 @@
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-3.9.1.src.tar.xz</LLVMSrcFile>
-    <LLDSrcFile>C:\Software\LLVM\lld-3.9.1.src.tar.xz</LLDSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-3.9.1.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-4.0.1.src.tar.xz</LLVMSrcFile>
+    <LLDSrcFile>C:\Software\LLVM\lld-4.0.1.src.tar.xz</LLDSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-4.0.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC</LLVMTargetsToBuild>
