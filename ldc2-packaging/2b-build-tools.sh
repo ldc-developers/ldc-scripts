@@ -8,7 +8,7 @@ cd $SRC_DIR
 rm -rf tools
 git clone --recursive https://github.com/dlang/tools.git
 cd tools
-git checkout stable
+git checkout master
 
 PATH=$PKG_DIR/bin:$PATH
 
