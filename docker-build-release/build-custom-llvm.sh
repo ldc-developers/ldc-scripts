@@ -31,7 +31,7 @@ docker run \
 	apt-get -yq install software-properties-common && \
 	add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
 	apt-get update && \
-	apt-get -yq install curl ninja-build g++-4.9 && \
+	apt-get -yq install curl ninja-build g++-4.9 gcc-4.9-plugin-dev && \
 	curl -OL https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh && \
 	sh cmake-3.7.2-Linux-x86_64.sh --prefix=/usr --skip-license && \
 	mkdir /build && \
@@ -48,6 +48,7 @@ docker run \
 	cd $LLVM_VERSION && \
 	CC=gcc-4.9 CXX=g++-4.9 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release \
 		-DLLVM_ENABLE_ASSERTIONS=ON \
+		-DLLVM_BINUTILS_INCDIR=/usr/lib/gcc/x86_64-linux-gnu/4.9/plugin/include \
 		-DCMAKE_INSTALL_PREFIX=/build/llvm-$LLVM_VERSION ../llvm && \
 	ninja install && \
 	cd .. && \
