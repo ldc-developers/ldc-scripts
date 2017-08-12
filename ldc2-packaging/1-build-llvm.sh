@@ -24,19 +24,10 @@ elif [[ $LLVM_VERSION == rev_* ]]; then
     svn checkout http://llvm.org/svn/llvm-project/lld/trunk@$LLVM_REV llvm/tools/lld
 else
     rm -f llvm-$LLVM_VERSION.src.tar.xz
-    curl -OL "http://releases.llvm.org/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz"
+    curl -OL "https://github.com/ldc-developers/llvm/releases/download/ldc-v$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz"
     $TAR xJf llvm-$LLVM_VERSION.src.tar.xz
     rm -f llvm-$LLVM_VERSION.src.tar.xz
     mv llvm-$LLVM_VERSION.src llvm
-
-    cd llvm/tools
-    rm -f lld-$LLVM_VERSION.src.tar.xz
-    curl -OL "http://releases.llvm.org/$LLVM_VERSION/lld-$LLVM_VERSION.src.tar.xz"
-    $TAR xJf lld-$LLVM_VERSION.src.tar.xz
-    rm -f lld-$LLVM_VERSION.src.tar.xz
-    rm -rf lld
-    mv lld-$LLVM_VERSION.src lld
-    cd ../..
 fi
 
 rm -rf $WORK_DIR/llvm
