@@ -36,5 +36,5 @@ WORKDIR ${BUILD_ROOT}
 COPY ldc2-packaging/env.sh \
 	ldc2-packaging/1-build-llvm.sh \
 	${BUILD_ROOT}/
-ENV LLVM_VERSION=4.0.0 LLVM_USE_CMAKE=1
+ENV LLVM_VERSION=4.0.1 LLVM_USE_CMAKE=1
 RUN ./1-build-llvm.sh && rm -rf ${BUILD_ROOT}/src

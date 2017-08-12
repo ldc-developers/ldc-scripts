@@ -18,7 +18,7 @@ set -x
 
 # Explicitly pull down latest base image. Per Docker website recommendations,
 # this is preferrable to doing apt-get upgrade in the container.
-docker pull ubuntu:12.04
+docker pull ubuntu:14.04
 
 CONFIG=ldc-builder-$1
 docker build -f $DIR/$CONFIG/Dockerfile -t dlangldc/$CONFIG .
