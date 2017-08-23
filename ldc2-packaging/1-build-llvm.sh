@@ -43,6 +43,9 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
     if [ -n "$USE_LIBCPP" ]; then
         extra_flags="$extra_flags -DLLVM_ENABLE_LIBCXX=True"
     fi
+    if [ "$OS" == "linux" ]; then
+        extra_flags="$extra_flags -DLLVM_BINUTILS_INCDIR=/usr/include"
+    fi
     if [ "$OS" == "solaris" ]; then
         extra_flags="$extra_flags -DPYTHON_EXECUTABLE=/usr/bin/python3.4"
     fi
