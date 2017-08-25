@@ -51,8 +51,7 @@ cd $SRC_DIR
 cd llvm*
 cd lib/Fuzzer
 # LLVM's 4.0 lib/Fuzzer/build.sh assumes clang, so we can't use it. Fixed in LLVM 5.0. Build manually for now.
-CXX=clang++
-CXX="${CXX:-clang}"
+CXX="${CXX:-g++}"
 extra_flags=
 if [ -n "$USE_LIBCPP" ]; then
     # Needed on OSX
