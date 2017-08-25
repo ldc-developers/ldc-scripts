@@ -44,7 +44,9 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
         extra_flags="$extra_flags -DLLVM_ENABLE_LIBCXX=True"
     fi
     if [ "$OS" == "linux" ]; then
-        extra_flags="$extra_flags -DLLVM_BINUTILS_INCDIR=/usr/include"
+        # Link against static libstdc++ to avoid dynamic link errors with
+        # incompatible system versions, e.g., for the LLVMgold.so plugin.
+        extra_flags="$extra_flags -DLLVM_BINUTILS_INCDIR=/usr/include -DCMAKE_CXX_FLAGS=-static-libstdc++"
     fi
     if [ "$OS" == "solaris" ]; then
         extra_flags="$extra_flags -DPYTHON_EXECUTABLE=/usr/bin/python3.4"
