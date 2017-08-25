@@ -44,9 +44,10 @@ ENV PATH=${PATH}:${BUILD_ROOT}/tools/cmake/bin
 # Build the LLVM libraries for LDC to use.
 COPY ldc2-packaging/env.sh \
 	ldc2-packaging/1-build-llvm.sh \
+	ldc2-packaging/1b-build-llvm-runtime.sh \
 	${BUILD_ROOT}/
 ENV LLVM_VERSION=4.0.1 LLVM_USE_CMAKE=1
-RUN ./1-build-llvm.sh && rm -rf ${BUILD_ROOT}/src
+RUN ./1-build-llvm.sh && ./1b-build-llvm-runtime.sh && rm -rf ${BUILD_ROOT}/src
 
 # Install a host D compiler.
 ENV HOST_LDC=ldc2-1.3.0-linux-x86_64
