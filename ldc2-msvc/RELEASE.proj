@@ -167,8 +167,14 @@
   </Target>
 
   <Target Name="ZIP">
+    <PropertyGroup>
+      <LDCSrcArchiveBaseName>ldc-$(LDCVersion)$(LDCVersionSuffix)-src</LDCSrcArchiveBaseName>
+    </PropertyGroup>
     <Delete Files="$(InstallDir)\$(LDCArchiveFileName)"/>
     <Exec Command="&quot;$(SevenZipExe)&quot; a -tzip -mx=9 $(LDCArchiveFileName) $(LDCInstallDir) &gt; nul" WorkingDirectory="$(LDCInstallDir)\.."/>
+    <Delete Files="$(SrcDir)\$(LDCSrcArchiveBaseName).zip"/>
+    <RenameDir FromDirectory="$(LDCSrcDir)" ToDirectory="$(SrcDir)\$(LDCSrcArchiveBaseName)"/>
+    <Exec Command="&quot;$(SevenZipExe)&quot; a -xr!.git* -tzip -mx=9 $(LDCSrcArchiveBaseName).zip $(LDCSrcArchiveBaseName) &gt; nul" WorkingDirectory="$(SrcDir)"/>
   </Target>
 
   <Target Name="All">
