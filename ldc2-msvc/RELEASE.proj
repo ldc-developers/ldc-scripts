@@ -58,7 +58,7 @@
     <LLVMSrcDir>$(SrcDir)\llvm-4.0.1.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
-    <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC</LLVMTargetsToBuild>
+    <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC;NVPTX</LLVMTargetsToBuild>
 
     <!-- DUB -->
     <DUBVersion>v1.4.0</DUBVersion>

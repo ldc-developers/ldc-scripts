@@ -57,7 +57,7 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
         aarch64) llvm_targets="AArch64;ARM" ;;
         arm) llvm_targets="ARM" ;;
         x86) llvm_targets="X86" ;;
-        x86_64) llvm_targets="X86;AArch64;ARM;PowerPC" ;;
+        x86_64) llvm_targets="X86;AArch64;ARM;PowerPC;NVPTX" ;;
     esac
 
     cmake $CMAKE_GENERATOR $SRC_DIR/llvm/ -DLLVM_TARGETS_TO_BUILD=$llvm_targets \
