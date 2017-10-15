@@ -54,19 +54,19 @@
     <LibCurlArchiveLibFile>$(LibCurlArchiveDir)\dmd2\windows\$(CurlLib)\curl.lib</LibCurlArchiveLibFile>
 
     <!-- LLVM -->
-    <LLVMSrcFile>C:\Software\LLVM\llvm-4.0.1.src.tar.xz</LLVMSrcFile>
-    <LLVMSrcDir>$(SrcDir)\llvm-4.0.1.src</LLVMSrcDir>
+    <LLVMSrcFile>C:\Software\LLVM\llvm-5.0.0.src.tar.xz</LLVMSrcFile>
+    <LLVMSrcDir>$(SrcDir)\llvm-5.0.0.src</LLVMSrcDir>
     <LLVMWrkDir>$(WrkDir)\llvm</LLVMWrkDir>
     <LLVMInstallDir>$(InstallDir)\llvm</LLVMInstallDir>
     <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC;NVPTX</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.4.0</DUBVersion>
+    <DUBVersion>v1.5.0</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
     <!-- LDC -->
-    <LDCVersion>1.4.0</LDCVersion>
+    <LDCVersion>1.5.0</LDCVersion>
     <LDCVersionSuffix>-beta1</LDCVersionSuffix>
 
     <!-- Use the following properties to clone from local git folder

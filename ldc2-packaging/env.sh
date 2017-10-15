@@ -102,7 +102,7 @@ case "$ARCH" in
 esac
 
 if [ -z "$LLVM_VERSION" ]; then
-    export LLVM_VERSION=4.0.1
+    export LLVM_VERSION=5.0.0
     export LLVM_USE_CMAKE=true
     echo "Defaulting to LLVM v${LLVM_VERSION}."
     echo "  Set LLVM_VERSION to the LLVM version to use, e.g. '${LLVM_VERSION}' (or 'release_38' or 'rev_123456' to fetch from SVN)."
