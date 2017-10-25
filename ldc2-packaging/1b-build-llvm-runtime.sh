@@ -25,6 +25,8 @@ rm -rf compiler-rt
 #    svn checkout http://llvm.org/svn/llvm-project/llvm/trunk@$LLVM_REV llvm
 #    svn checkout http://llvm.org/svn/llvm-project/lld/trunk@$LLVM_REV llvm/tools/lld
 #else
+    # strip off potential LDC-specific version suffix (-N)
+    LLVM_VERSION=$(echo "$LLVM_VERSION" | sed s:-[0-9]$::)
     rm -f compiler-rt-$LLVM_VERSION.src.tar.xz
     curl -OL "http://releases.llvm.org/$LLVM_VERSION/compiler-rt-$LLVM_VERSION.src.tar.xz"
     $TAR xJf compiler-rt-$LLVM_VERSION.src.tar.xz
