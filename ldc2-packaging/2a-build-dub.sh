@@ -13,9 +13,9 @@ git checkout $DUB_VERSION
 PATH=$PKG_DIR/bin:$PATH
 
 if [ "$BUILD_WITH_LTO" == "off" ]; then
-  export DMD="$WORK_DIR/ldc/bin/ldmd2"
+  export DMD="$PKG_DIR/bin/ldmd2"
 else
-  export DMD="$WORK_DIR/ldc/bin/ldmd2 -flto=$BUILD_WITH_LTO"
+  export DMD="$PKG_DIR/bin/ldmd2 -flto=$BUILD_WITH_LTO"
 fi
 
 ./build.sh

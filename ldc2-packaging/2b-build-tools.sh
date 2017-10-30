@@ -12,6 +12,6 @@ git checkout master
 
 PATH=$PKG_DIR/bin:$PATH
 
-make -f posix.mak install DMD=$WORK_DIR/ldc/bin/ldmd2 INSTALL_DIR=$PWD
+make -f posix.mak install DMD=$PKG_DIR/bin/ldmd2 INSTALL_DIR=$PWD
 
 cp bin/rdmd bin/ddemangle bin/dustmite $PKG_DIR/bin
