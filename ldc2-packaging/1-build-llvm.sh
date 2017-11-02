@@ -51,6 +51,11 @@ elif [ -n "$LLVM_USE_CMAKE" ]; then
     if [ "$OS" == "solaris" ]; then
         extra_flags="$extra_flags -DPYTHON_EXECUTABLE=/usr/bin/python3.4"
     fi
+    # Work around issue where LLVM 5.0 detects presence of macOS 10.13+ function
+    # even if targeting older version when building with Xcode 9.
+    if [ "$OS" == "osx" ]; then
+        extra_flags="$extra_flags -DHAVE_FUTIMENS=0"
+    fi
 
     # Choose set of enabled LLVM targets based on host architecture
     case "$ARCH" in
