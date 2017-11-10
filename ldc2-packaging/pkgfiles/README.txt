@@ -18,15 +18,12 @@ your (latest) Visual C++ installation automatically.
 By setting the LDC_VSDIR environment variable to an
 existing Visual Studio directory, you can instruct LDC to
 use a specific Visual C++ installation.
-
-NOTE: Running LDC inside a 'VS Tools Command Prompt' is
-      deprecated.
-
-The Visual C++ detection is skipped when running LDC in a
-'VS Native/Cross Tools Command Prompt' (i.e., if the
-environment variable VSINSTALLDIR is set). Linking will
-thus be restricted to the selected target (=> no cross-
-linking support via '-m32' etc.).
+If run in a 'VS Native/Cross Tools Command Prompt' (i.e.,
+if the environment variable VSINSTALLDIR is set), LDC skips
+the Visual C++ detection. This saves about one second for
+each linking operation, but linking will be restricted to
+the selected target (=> no cross-linking support via
+'-m32' in a x64 command prompt).
 
 DUB
 
