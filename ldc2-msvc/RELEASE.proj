@@ -61,12 +61,12 @@
     <LLVMTargetsToBuild>X86;AArch64;ARM;PowerPC;NVPTX</LLVMTargetsToBuild>
 
     <!-- DUB -->
-    <DUBVersion>v1.5.0</DUBVersion>
+    <DUBVersion>v1.6.0</DUBVersion>
     <DUBGitSource>https://github.com/dlang/dub.git</DUBGitSource>
     <DUBSrcDir>$(SrcDir)\dub</DUBSrcDir>
 
     <!-- LDC -->
-    <LDCVersion>1.5.0</LDCVersion>
+    <LDCVersion>1.6.0</LDCVersion>
     <LDCVersionSuffix>-beta1</LDCVersionSuffix>
 
     <!-- Use the following properties to clone from local git folder
