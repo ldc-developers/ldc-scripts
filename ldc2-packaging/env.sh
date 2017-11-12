@@ -57,8 +57,8 @@ case "$OS" in
         export TAR=tar
         ;;
     osx)
-        export CMAKE_GENERATOR=
-        export MAKE=make
+        export CMAKE_GENERATOR='-G Ninja'
+        export MAKE=ninja
         # OS X's own tar is old and does not support --exclude-vcs
         export TAR=gnutar
         # On OS X, force Clang to use the libc++ standard library. LLVM 3.5
