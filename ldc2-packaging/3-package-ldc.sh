@@ -11,9 +11,6 @@ fi
 
 cp $SRC_DIR/ldc/LICENSE $PKG_DIR
 
-# Add Dub settings file to package
-cp -r pkgfiles/dub $PKG_DIR/etc
-
 # Rename pkg/ to the final name and zip it up.
 cd $BUILD_ROOT
 rm -rf $PKG_BASE
