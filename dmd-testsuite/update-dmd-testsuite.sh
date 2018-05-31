@@ -35,6 +35,9 @@ fi
 
 # Update the DMD repository and create a clone to operate on.
 cd $DMD_CLONE
+git checkout stable
+git pull origin stable
+git checkout master
 git pull origin
 git clone --bare $DMD_CLONE $TESTSUITE_TMP
 
